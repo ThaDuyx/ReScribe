@@ -15,6 +15,8 @@
 		6AEBEA39241672D9008D14D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AEBEA38241672D9008D14D5 /* Assets.xcassets */; };
 		6AEBEA3C241672D9008D14D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AEBEA3A241672D9008D14D5 /* LaunchScreen.storyboard */; };
 		6AEBEA442416737B008D14D5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6AEBEA432416737B008D14D5 /* GoogleService-Info.plist */; };
+		6AEBEA4624169076008D14D5 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AEBEA4524169076008D14D5 /* Login.storyboard */; };
+		6AEBEA49241690D7008D14D5 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBEA48241690D7008D14D5 /* LoginViewController.swift */; };
 		89CE335F3C40AC7E7D97E203 /* Pods_ReScribe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556AD07E50692B4303D34380 /* Pods_ReScribe.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +33,8 @@
 		6AEBEA3B241672D9008D14D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6AEBEA3D241672D9008D14D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6AEBEA432416737B008D14D5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6AEBEA4524169076008D14D5 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		6AEBEA48241690D7008D14D5 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6CA6DB4A251C35578B4A7C9E /* Pods-ReScribe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReScribe.release.xcconfig"; path = "Target Support Files/Pods-ReScribe/Pods-ReScribe.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,17 +88,35 @@
 		6AEBEA2C241672D6008D14D5 /* ReScribe */ = {
 			isa = PBXGroup;
 			children = (
+				6AEBEA4A241690E5008D14D5 /* Main */,
+				6AEBEA472416909E008D14D5 /* Login */,
 				6AEBEA2D241672D6008D14D5 /* AppDelegate.swift */,
 				6AEBEA2F241672D6008D14D5 /* SceneDelegate.swift */,
-				6AEBEA31241672D6008D14D5 /* FirstViewController.swift */,
 				6AEBEA432416737B008D14D5 /* GoogleService-Info.plist */,
-				6AEBEA33241672D6008D14D5 /* SecondViewController.swift */,
-				6AEBEA35241672D6008D14D5 /* Main.storyboard */,
 				6AEBEA38241672D9008D14D5 /* Assets.xcassets */,
 				6AEBEA3A241672D9008D14D5 /* LaunchScreen.storyboard */,
 				6AEBEA3D241672D9008D14D5 /* Info.plist */,
 			);
 			path = ReScribe;
+			sourceTree = "<group>";
+		};
+		6AEBEA472416909E008D14D5 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				6AEBEA4524169076008D14D5 /* Login.storyboard */,
+				6AEBEA48241690D7008D14D5 /* LoginViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		6AEBEA4A241690E5008D14D5 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				6AEBEA35241672D6008D14D5 /* Main.storyboard */,
+				6AEBEA31241672D6008D14D5 /* FirstViewController.swift */,
+				6AEBEA33241672D6008D14D5 /* SecondViewController.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -158,6 +180,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6AEBEA3C241672D9008D14D5 /* LaunchScreen.storyboard in Resources */,
+				6AEBEA4624169076008D14D5 /* Login.storyboard in Resources */,
 				6AEBEA442416737B008D14D5 /* GoogleService-Info.plist in Resources */,
 				6AEBEA39241672D9008D14D5 /* Assets.xcassets in Resources */,
 				6AEBEA37241672D6008D14D5 /* Main.storyboard in Resources */,
@@ -216,6 +239,7 @@
 				6AEBEA34241672D6008D14D5 /* SecondViewController.swift in Sources */,
 				6AEBEA32241672D6008D14D5 /* FirstViewController.swift in Sources */,
 				6AEBEA2E241672D6008D14D5 /* AppDelegate.swift in Sources */,
+				6AEBEA49241690D7008D14D5 /* LoginViewController.swift in Sources */,
 				6AEBEA30241672D6008D14D5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
