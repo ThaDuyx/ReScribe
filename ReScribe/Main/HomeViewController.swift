@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  HomeViewController.swift
 //  ReScribe
 //
 //  Created by Simon Andersen on 09/03/2020.
@@ -9,12 +9,11 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+   
+    @IBOutlet weak var infotabView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
     }
-
-
 }
 
