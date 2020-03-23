@@ -10,10 +10,9 @@ import UIKit
 
 class GroupViewController: UIViewController {
 
+    @IBOutlet weak var infotabView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
     }
-
-
 }
