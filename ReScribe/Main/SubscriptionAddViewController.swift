@@ -20,12 +20,13 @@ extension UIColor {
     }
 }
 
+let subsNameArr = ["Viaplay", "Netflix", "HBO", "Youtube", "CBS", "Twitch", "Cmore", "D-play", "Spotify", "Apple Music", "World of Warcraft", "Apple TV", "Discord", "Strava", "Disney+", "Amazon Prime"]
+var rowIndex = 0
+
 class SubscriptionAddViewController: UIViewController {
     
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var searchBarUI: UISearchBar!
-    
-    let subsNameArr = ["Viaplay", "Netflix", "HBO", "Youtube", "CBS", "Twitch", "Cmore", "D-play", "Spotify", "Apple Music", "World of Warcraft", "Apple TV", "Discord", "Strava", "Disney+", "Amazon Prime"]
     
     var searchName = [String]()
     var searching = false
@@ -60,6 +61,11 @@ extension SubscriptionAddViewController: UITableViewDataSource, UITableViewDeleg
             cell?.textLabel?.text = subsNameArr[indexPath.row]
         }
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        rowIndex = indexPath.row
+        performSegue(withIdentifier: "subs", sender: self)
     }
 }
 
