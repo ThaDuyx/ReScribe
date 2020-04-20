@@ -13,6 +13,7 @@ import FirebaseUI
 class SubscriptionViewController: UIViewController {
     
     let storage = Storage.storage()
+    @IBOutlet weak var infotabView: UIView!
     @IBOutlet weak var genreLabel: UILabel!
     @IBOutlet weak var headerForSub: UILabel!
     @IBOutlet weak var imageForSub: UIImageView!
@@ -26,6 +27,7 @@ class SubscriptionViewController: UIViewController {
         let imageView: UIImageView = self.imageForSub
         let placeholderImage = UIImage(named: "Netflix.jpg")
         imageView.sd_setImage(with: starsRef, placeholderImage: placeholderImage)
+        self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
     }
         override func viewWillDisappear(_ animated: Bool) {
             self.navigationController?.setNavigationBarHidden(true, animated: true)
