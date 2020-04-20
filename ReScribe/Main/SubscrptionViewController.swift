@@ -7,18 +7,25 @@
 //
 
 import UIKit
-
+import Firebase
+import FirebaseUI
 
 class SubscriptionViewController: UIViewController {
     
-    
+    let storage = Storage.storage()
+    @IBOutlet weak var genreLabel: UILabel!
     @IBOutlet weak var headerForSub: UILabel!
     @IBOutlet weak var imageForSub: UIImageView!
+    var headerName = ""
     
     override func viewDidLoad() {
-    super.viewDidLoad()
-        
-        headerForSub.text = subsNameArr[rowIndex]
+        super.viewDidLoad()
+        headerForSub.text = headerName
+        let storageRef = storage.reference()
+        let starsRef = storageRef.child("Images/" + headerName + ".jpg")
+        let imageView: UIImageView = self.imageForSub
+        let placeholderImage = UIImage(named: "Netflix.jpg")
+        imageView.sd_setImage(with: starsRef, placeholderImage: placeholderImage)
     }
         override func viewWillDisappear(_ animated: Bool) {
             self.navigationController?.setNavigationBarHidden(true, animated: true)
