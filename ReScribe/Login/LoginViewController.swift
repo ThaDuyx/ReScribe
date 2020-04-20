@@ -27,7 +27,7 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func loginTapped(_ sender: Any) {
-
+        
         if (insertEmail.text?.isEmpty)! || (insertPass.text?.isEmpty)! {
             errorLabel.alpha = 1
             errorLabel.text = "email/password cant be empty"
@@ -54,9 +54,6 @@ class LoginViewController: UIViewController {
                     self.view.window?.rootViewController = vc
                     self.view.window?.makeKeyAndVisible()
                     
-                    /*let homeViewController = self.storyboard?.instantiateViewController(identifier: "HomeVC") as? HomeViewController
-                    self.view.window?.rootViewController = homeViewController
-                    self.view.window?.makeKeyAndVisible()*/
                 }
             }
             
