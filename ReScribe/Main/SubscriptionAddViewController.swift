@@ -29,7 +29,6 @@ class SubscriptionAddViewController: UIViewController {
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var searchBarUI: UISearchBar!
     
-    var ref: DatabaseReference!
     var searchName = [String]()
     var searching = false
     var subnames = [String]()
