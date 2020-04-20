@@ -18,13 +18,12 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var databaseLoad: UIActivityIndicatorView!
-    @IBOutlet weak var viewHolder: UIView!
+    @IBOutlet weak var viewLogin: UIView!
     var errorOcurred = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.viewHolder.round(corners: [.bottomLeft, .bottomRight, .topLeft, .topRight], cornerRadius: 20)
     }
 
     @IBAction func loginTapped(_ sender: Any) {
