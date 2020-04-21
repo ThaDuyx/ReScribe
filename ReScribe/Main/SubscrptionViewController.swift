@@ -24,9 +24,30 @@ class SubscriptionViewController: UIViewController {
 
     
     
+    let userID = Auth.auth().currentUser!.uid
+    let db = Firestore.firestore()
+    var genreString = ""
     var headerName = ""
+    var planName = ""
+    var price = 0
     var subPlans = [Plan]()
     
+    @IBAction func saveBtnTapped(_ sender: Any) {
+        
+        if datePick.text!.isEmpty{
+            print("Cannot save before date is added")
+        } else {
+            db.collection("users").document(userID).collection("Subs").addDocument(data: ["company":headerName, "genre":genreString, "date":datePick.text!, "status":true , "plan":planName, "price":price]) { (error) in
+                if error != nil {
+                    
+                } else {
+                    self.navigationController?.popToRootViewController(animated: true)
+                }
+            }
+        }
+        
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         planView.delegate = self
@@ -42,11 +63,11 @@ class SubscriptionViewController: UIViewController {
         self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
         
         //Genre query
-        let db = Firestore.firestore()
+        //Maybe place db here
         db.collection("Subscriptions").document(headerName).getDocument { (document, err) in
             if let data = document?.data(){
-                let genreString = data["Genre"] as! String
-                self.genreLabel.text = genreString
+                self.genreString = data["Genre"] as! String
+                self.genreLabel.text = self.genreString
             } else {
                 print("No document")
             }
@@ -98,9 +119,12 @@ class SubscriptionViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         planView.reloadData()
     }
+    
+    
 }
 
 extension SubscriptionViewController: UITableViewDataSource, UITableViewDelegate{
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return subPlans.count
@@ -114,5 +138,10 @@ extension SubscriptionViewController: UITableViewDataSource, UITableViewDelegate
         cell.packagePlanLabel.text = subPlans[indexPath.row].name
         cell.amountLabel.text = String(subPlans[indexPath.row].price)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        planName = subPlans[indexPath.row].name
+        price = subPlans[indexPath.row].price
     }
 }
