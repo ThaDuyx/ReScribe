@@ -17,10 +17,6 @@ class Subscription {
     var genre: String
     
     init?(name: String, image: UIImage, plan: String, price: Int, genre: String){
-        guard !name.isEmpty || !plan.isEmpty else {
-            return nil
-        }
-
         self.name = name
         self.plan = plan
         self.image = image
