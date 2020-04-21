@@ -26,6 +26,7 @@
 		837A0D58241692AB0012A1F3 /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837A0D57241692AB0012A1F3 /* GroupViewController.swift */; };
 		837A0D612428D0CA0012A1F3 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837A0D602428D0CA0012A1F3 /* UIView+Extension.swift */; };
 		837A0D632428E3730012A1F3 /* SubscriptionAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837A0D622428E3730012A1F3 /* SubscriptionAddViewController.swift */; };
+		83D1F2C4244F0AE000FE8F4F /* selectedPlanTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D1F2C3244F0AE000FE8F4F /* selectedPlanTableViewCell.swift */; };
 		89CE335F3C40AC7E7D97E203 /* Pods_ReScribe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556AD07E50692B4303D34380 /* Pods_ReScribe.framework */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		837A0D57241692AB0012A1F3 /* GroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
 		837A0D602428D0CA0012A1F3 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		837A0D622428E3730012A1F3 /* SubscriptionAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionAddViewController.swift; sourceTree = "<group>"; };
+		83D1F2C3244F0AE000FE8F4F /* selectedPlanTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = selectedPlanTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +152,7 @@
 				837A0D622428E3730012A1F3 /* SubscriptionAddViewController.swift */,
 				835E20182445F1E300C04561 /* SubscrptionViewController.swift */,
 				6ACC3084244E14AE00802849 /* Plans.swift */,
+				83D1F2C3244F0AE000FE8F4F /* selectedPlanTableViewCell.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 				8305F44A244DDD4200FEBE51 /* TabBarController.swift in Sources */,
 				6AEBEA30241672D6008D14D5 /* SceneDelegate.swift in Sources */,
 				6A23119B2449FEF3000E1B09 /* Subscriptions.swift in Sources */,
+				83D1F2C4244F0AE000FE8F4F /* selectedPlanTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

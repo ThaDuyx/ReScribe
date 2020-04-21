@@ -21,6 +21,8 @@ class SubscriptionViewController: UIViewController {
     @IBOutlet weak var imageForSub: UIImageView!
     @IBOutlet weak var datePick: UITextField!
     @IBOutlet weak var saveBtn: UIButton!
+
+    
     
     var headerName = ""
     var subPlans = [Plan]()
@@ -105,11 +107,12 @@ extension SubscriptionViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = planView.dequeueReusableCell(withIdentifier: "plansCell", for: indexPath)
+        let cell = planView.dequeueReusableCell(withIdentifier: "plansCell", for: indexPath) as! selectedPlanTableViewCell
         
-        cell.textLabel?.text = subPlans[indexPath.row].name
-        cell.detailTextLabel?.text = String(subPlans[indexPath.row].price)
-        
+        /*cell.textLabel?.text = subPlans[indexPath.row].name
+        cell.detailTextLabel?.text = String(subPlans[indexPath.row].price)*/
+        cell.packagePlanLabel.text = subPlans[indexPath.row].name
+        cell.amountLabel.text = String(subPlans[indexPath.row].price)
         return cell
     }
 }
