@@ -20,9 +20,7 @@ class SubscriptionViewController: UIViewController {
     @IBOutlet weak var headerForSub: UILabel!
     @IBOutlet weak var imageForSub: UIImageView!
     @IBOutlet weak var datePick: UITextField!
-    @IBOutlet weak var saveBtn: UIButton!
-
-    
+    @IBOutlet weak var addBtn: UIButton!
     
     let userID = Auth.auth().currentUser!.uid
     let db = Firestore.firestore()
@@ -61,7 +59,7 @@ class SubscriptionViewController: UIViewController {
         let placeholderImage = UIImage(named: "Netflix.jpg")
         imageView.sd_setImage(with: starsRef, placeholderImage: placeholderImage)
         self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
-        
+        self.addBtn.round(corners: [.allCorners], cornerRadius: 10)
         //Genre query
         //Maybe place db here
         db.collection("Subscriptions").document(headerName).getDocument { (document, err) in

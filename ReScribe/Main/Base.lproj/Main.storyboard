@@ -510,31 +510,31 @@
                                 <rect key="frame" x="20" y="238" width="374" height="555"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zPl-mq-AnT">
-                                        <rect key="frame" x="8" y="218" width="358" height="262"/>
+                                        <rect key="frame" x="8" y="218" width="358" height="267"/>
                                         <color key="backgroundColor" red="0.20784313730000001" green="0.20784313730000001" blue="0.20784313730000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="plansCell" id="cgb-Og-E3K" customClass="selectedPlanTableViewCell" customModule="ReScribe" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="358" height="43.333332061767578"/>
+                                                <rect key="frame" x="0.0" y="28" width="358" height="43.666667938232422"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cgb-Og-E3K" id="4BY-uw-gDq">
-                                                    <rect key="frame" x="0.0" y="0.0" width="358" height="43.333332061767578"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="358" height="43.666667938232422"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="doM-Ll-K4p">
-                                                            <rect key="frame" x="15" y="11.000000000000002" width="328" height="20.666666666666671"/>
+                                                            <rect key="frame" x="15" y="11" width="328" height="21"/>
                                                             <accessibility key="accessibilityConfiguration" identifier="labelOne"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.86274509799999999" green="0.88235294119999996" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0jd-sm-ddE">
-                                                            <rect key="frame" x="0.0" y="11.000000000000002" width="293" height="20.666666666666671"/>
+                                                            <rect key="frame" x="0.0" y="11" width="293" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.86274509799999999" green="0.88235294119999996" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=",- Dkk" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ay2-mh-ys9">
-                                                            <rect key="frame" x="0.0" y="11.000000000000002" width="343" height="20.666666666666671"/>
+                                                            <rect key="frame" x="0.0" y="11" width="343" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.86274509799999999" green="0.88235294119999996" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -624,7 +624,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJa-bg-E1g">
-                                        <rect key="frame" x="150" y="510" width="74" height="30"/>
+                                        <rect key="frame" x="110" y="515" width="154" height="30"/>
                                         <color key="backgroundColor" red="0.015686274510000001" green="0.49803921569999998" blue="0.50588235290000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" red="0.86274509799999999" green="0.88235294119999996" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Add"/>
@@ -638,15 +638,15 @@
                                     <constraint firstItem="6x1-fB-acx" firstAttribute="leading" secondItem="3C0-68-Cli" secondAttribute="leading" constant="8" id="5ra-9z-wP8"/>
                                     <constraint firstItem="5aC-ks-wEO" firstAttribute="leading" secondItem="3C0-68-Cli" secondAttribute="leading" constant="8" id="DEM-Mo-y3u"/>
                                     <constraint firstItem="5aC-ks-wEO" firstAttribute="top" secondItem="3C0-68-Cli" secondAttribute="top" constant="14" id="HYx-Q9-ENh"/>
-                                    <constraint firstAttribute="bottom" secondItem="oJa-bg-E1g" secondAttribute="bottom" constant="15" id="KSd-VP-U0y"/>
+                                    <constraint firstAttribute="bottom" secondItem="oJa-bg-E1g" secondAttribute="bottom" constant="10" id="KSd-VP-U0y"/>
                                     <constraint firstAttribute="trailing" secondItem="zPl-mq-AnT" secondAttribute="trailing" constant="8" id="Rwh-C7-Xzp"/>
-                                    <constraint firstItem="oJa-bg-E1g" firstAttribute="leading" secondItem="3C0-68-Cli" secondAttribute="leading" constant="150" id="TIF-Nz-O2Y"/>
+                                    <constraint firstItem="oJa-bg-E1g" firstAttribute="leading" secondItem="3C0-68-Cli" secondAttribute="leading" constant="110" id="TIF-Nz-O2Y"/>
                                     <constraint firstAttribute="trailing" secondItem="6x1-fB-acx" secondAttribute="trailing" constant="8" id="XhR-RN-xg7"/>
                                     <constraint firstItem="6x1-fB-acx" firstAttribute="top" secondItem="3C0-68-Cli" secondAttribute="top" constant="50" id="bXM-Jl-r9d"/>
                                     <constraint firstItem="zPl-mq-AnT" firstAttribute="leading" secondItem="3C0-68-Cli" secondAttribute="leading" constant="8" id="cag-zL-eov"/>
-                                    <constraint firstAttribute="trailing" secondItem="oJa-bg-E1g" secondAttribute="trailing" constant="150" id="cdm-f1-BHG"/>
+                                    <constraint firstAttribute="trailing" secondItem="oJa-bg-E1g" secondAttribute="trailing" constant="110" id="cdm-f1-BHG"/>
                                     <constraint firstItem="zPl-mq-AnT" firstAttribute="top" secondItem="6x1-fB-acx" secondAttribute="bottom" constant="50" id="fuJ-F8-q4j"/>
-                                    <constraint firstItem="oJa-bg-E1g" firstAttribute="top" secondItem="zPl-mq-AnT" secondAttribute="bottom" constant="30" id="i1O-Pp-CEj"/>
+                                    <constraint firstItem="oJa-bg-E1g" firstAttribute="top" secondItem="zPl-mq-AnT" secondAttribute="bottom" constant="30" id="wpZ-zd-fAz"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -664,6 +664,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="bVb-yB-QKe"/>
                     <connections>
+                        <outlet property="addBtn" destination="oJa-bg-E1g" id="OPp-sw-mUP"/>
                         <outlet property="datePick" destination="G1M-c9-MNF" id="yUs-HB-TcO"/>
                         <outlet property="genreLabel" destination="6J4-Bl-EKZ" id="L4I-Qd-tB4"/>
                         <outlet property="headerForSub" destination="S0r-dO-Gfc" id="Wjl-wS-i20"/>
