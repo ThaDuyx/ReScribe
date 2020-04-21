@@ -11,6 +11,7 @@ import UIKit
 class IndividualViewController: UIViewController {
     @IBOutlet weak var addButtonUI: UIButton!
     @IBOutlet weak var infotabView: UIView!
+    
     override func viewDidLoad() {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         super.viewDidLoad()

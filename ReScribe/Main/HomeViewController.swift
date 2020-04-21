@@ -8,7 +8,7 @@
 
 import UIKit
 
-let nameArr = ["Viaplay", "Netflix", "HBO", "Youtube", "CBS", "Twitch", "Cmore", "D-play", "Spotify", "Apple Music", "World of Warcraft", "Apple TV", "Discord", "Strava", "Disney+", "Amazon Prime"]
+let nameArr = [""]
 
 class HomeViewController: UIViewController {
    
@@ -22,8 +22,6 @@ class HomeViewController: UIViewController {
         self.inviView.round(corners: [.allCorners], cornerRadius: 10)
         self.groupView.round(corners: [.allCorners], cornerRadius: 10)
         self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
-
-
     }
 }
 
