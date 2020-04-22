@@ -30,22 +30,6 @@ class SubscriptionViewController: UIViewController {
     var price = 0
     var subPlans = [Plan]()
     
-    @IBAction func saveBtnTapped(_ sender: Any) {
-        
-        if datePick.text!.isEmpty{
-            print("Cannot save before date is added")
-        } else {
-            db.collection("users").document(userID).collection("Subs").addDocument(data: ["company":headerName, "genre":genreString, "date":datePick.text!, "status":true , "plan":planName, "price":price]) { (error) in
-                if error != nil {
-                    
-                } else {
-                    self.navigationController?.popToRootViewController(animated: true)
-                }
-            }
-        }
-        
-        
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         planView.delegate = self
@@ -118,8 +102,23 @@ class SubscriptionViewController: UIViewController {
         planView.reloadData()
     }
     
-    
+    @IBAction func saveBtnTapped(_ sender: Any) {
+        
+        if datePick.text!.isEmpty{
+            print("Cannot save before date is added")
+        } else {
+            db.collection("users").document(userID).collection("Subs").addDocument(data: ["company":headerName, "genre":genreString, "date":datePick.text!, "status":true , "plan":planName, "price":price]) { (error) in
+                if error != nil {
+                    
+                } else {
+                    self.navigationController?.popToRootViewController(animated: true)
+                }
+            }
+        }
+    }
 }
+
+
 
 extension SubscriptionViewController: UITableViewDataSource, UITableViewDelegate{
 
@@ -143,3 +142,4 @@ extension SubscriptionViewController: UITableViewDataSource, UITableViewDelegate
         price = subPlans[indexPath.row].price
     }
 }
+
