@@ -26,6 +26,7 @@ class HomeViewController: UIViewController {
     let userID = Auth.auth().currentUser!.uid
     let db = Firestore.firestore()
     var individualSubs = [Subscription]()
+    var firstload = false
 
     
     override func viewDidLoad() {
@@ -37,34 +38,37 @@ class HomeViewController: UIViewController {
         let storageRef = storage.reference()
         db.collection("users").document(userID).collection("Subs").addSnapshotListener { (snapshot, error) in
             if let error = error {
-                print("Error getting documents: \(error)")
+                print("Error getting change: \(error)")
             } else {
-                for document in snapshot!.documents {
-                    let queryData = document.data()
-                    let imageDirectory = queryData["company"] as! String
-                    let starsRef = storageRef.child("Images/" + imageDirectory  + ".jpg")
-                    starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
-                        if let error = error {
-                          print("Error \(error)")
-                        } else {
-                            let logoImage = UIImage(data: data!)!
-                            let companyName = queryData["company"] as! String
-                            let subPlan = queryData["plan"] as! String
-                            let subPrice = queryData["price"] as! Int
-                            let subGenre = queryData["genre"] as! String
-                            let subStatus = queryData["status"] as! Bool
-                            let subDate = queryData["date"] as! String
-                            self.individualSubs.append(Subscription(name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate)!)
-                            DispatchQueue.main.async {
-                                //self.inviCell.reloadData()
-                                self.totalAmountLabel.text = String(self.calculateTotalAmount(allSubs: self.individualSubs)) + " dkk,-"
+                let newDocument = snapshot
+                newDocument?.documentChanges.forEach({ change in
+                    if change.type == .added {
+                        let newData = change.document.data()
+                        let companyName = newData["company"] as! String
+                        let subPlan = newData["plan"] as! String
+                        let subPrice = newData["price"] as! Int
+                        let subGenre = newData["genre"] as! String
+                        let subStatus = newData["status"] as! Bool
+                        let subDate = newData["date"] as! String
+                        let starsRef = storageRef.child("Images/" + companyName  + ".jpg")
+                        starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
+                            if let error = error {
+                              print("Error \(error)")
+                            } else {
+                                let logoImage = UIImage(data: data!)!
+                                self.individualSubs.append(Subscription(name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate)!)
+                                DispatchQueue.main.async {
+                                    self.inviTableView.reloadData()
+                                    self.totalAmountLabel.text = String(self.calculateTotalAmount(allSubs: self.individualSubs)) + " dkk,-"
+                                }
                             }
                         }
                     }
-                }
+                })
             }
         }
     }
+    
     func calculateTotalAmount(allSubs: [Subscription]) -> Int{
         var totalamount = 0
         for sub in allSubs{
@@ -79,14 +83,15 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return nameArr.count
+        return individualSubs.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let inviCell = inviTableView.dequeueReusableCell(withIdentifier: "inviCell", for: indexPath) as! HomeInviTableViewCell
-        let grpCell = groupTableView.dequeueReusableCell(withIdentifier: "grpCell", for: indexPath) as! HomeGrpTableViewCell
-        inviCell.costLabel.text = nameArr[indexPath.row]
-        grpCell.costLabel.text = ""
+        inviCell.costLabel.text = String(individualSubs[indexPath.row].price)
+        inviCell.imageLabel.image = individualSubs[indexPath.row].image
+        inviCell.remainingLabel.text = individualSubs[indexPath.row].date
+        
         return inviCell
     }
 }
