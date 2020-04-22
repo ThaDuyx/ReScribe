@@ -33,11 +33,11 @@ class HomeViewController: UIViewController {
         self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
         
         let storageRef = storage.reference()
-        db.collection("users").document(userID).collection("Subs").getDocuments { (snapShot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
+        db.collection("users").document(userID).collection("Subs").addSnapshotListener { (snapshot, error) in
+            if let error = error {
+                print("Error getting documents: \(error)")
             } else {
-                for document in snapShot!.documents {
+                for document in snapshot!.documents {
                     let queryData = document.data()
                     let imageDirectory = queryData["company"] as! String
                     let starsRef = storageRef.child("Images/" + imageDirectory  + ".jpg")
@@ -52,7 +52,6 @@ class HomeViewController: UIViewController {
                             let subGenre = queryData["genre"] as! String
                             let subStatus = queryData["status"] as! Bool
                             let subDate = queryData["date"] as! String
-                            
                             self.individualSubs.append(Subscription(name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate)!)
                             DispatchQueue.main.async {
                                 //self.inviCell.reloadData()
@@ -67,7 +66,9 @@ class HomeViewController: UIViewController {
     func calculateTotalAmount(allSubs: [Subscription]) -> Int{
         var totalamount = 0
         for sub in allSubs{
-            totalamount = sub.price + totalamount
+            if sub.status == true{
+                totalamount = sub.price + totalamount
+            }
         }
         return totalamount
     }
