@@ -11,7 +11,6 @@ import Firebase
 import FirebaseStorage
 
 let nameArr = ["Viaplay", "Netflix", "HBO", "Youtube", "CBS", "Twitch", "Cmore", "D-play", "Spotify", "Apple Music", "World of Warcraft", "Apple TV", "Discord", "Strava", "Disney+", "Amazon Prime"]
-let arrayOfSome = ["Viaplay", "Netflix"]
 
 class HomeViewController: UIViewController {
    
