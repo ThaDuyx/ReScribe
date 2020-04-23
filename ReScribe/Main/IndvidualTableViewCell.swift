@@ -10,6 +10,8 @@ import UIKit
 
 class IndvidualTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var imageLabel: UIImageView!
+    @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var costLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
