@@ -17,7 +17,5 @@ class IndividualViewController: UIViewController {
         super.viewDidLoad()
         self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
         self.addButtonUI.round(corners: [.bottomLeft, .bottomRight, .topRight, .topLeft], cornerRadius: 20)
-
     }
-
 }

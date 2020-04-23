@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 import FirebaseStorage
+//Taken from this github repo: https://github.com/EFPrefix/EFCountingLabel
+import EFCountingLabel
 
 let nameArr = ["Viaplay", "Netflix", "HBO", "Youtube", "CBS", "Twitch", "Cmore", "D-play", "Spotify", "Apple Music", "World of Warcraft", "Apple TV", "Discord", "Strava", "Disney+", "Amazon Prime"]
 let arrayOfSome = ["Viaplay", "Netflix"]
@@ -18,9 +20,11 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var groupView: UIView!
     @IBOutlet weak var inviView: UIView!
     @IBOutlet weak var infotabView: UITableView!
-    @IBOutlet weak var totalAmountLabel: UILabel!
+    @IBOutlet weak var totalAmountLabel: EFCountingLabel!
     @IBOutlet weak var inviTableView: UITableView!
     @IBOutlet weak var groupTableView: UITableView!
+    
+    
     
     let storage = Storage.storage()
     let userID = Auth.auth().currentUser!.uid
@@ -59,7 +63,15 @@ class HomeViewController: UIViewController {
                                 self.individualSubs.append(Subscription(name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate)!)
                                 DispatchQueue.main.async {
                                     self.inviTableView.reloadData()
-                                    self.totalAmountLabel.text = String(self.calculateTotalAmount(allSubs: self.individualSubs)) + " dkk,-"
+                                    let totalSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
+                                    //Self counting label from this repo: https://github.com/EFPrefix/EFCountingLabel
+                                    self.totalAmountLabel.countFromZeroTo(CGFloat(totalSubAmount), withDuration: 1.5)
+                                    self.totalAmountLabel.completionBlock = { () in
+                                        self.totalAmountLabel.text = String(totalSubAmount) + " dkk,-"
+                                    }
+
+                                    //let test = self.calculateRemainingDays(date: subDate)
+                                    //print(test)
                                 }
                             }
                         }
@@ -78,6 +90,29 @@ class HomeViewController: UIViewController {
         }
         return totalamount
     }
+    
+   /* func calculateRemainingDays(date: String) -> Int{
+        let daysRemaining = 0
+
+        let actualDate = Date()
+        let actualDateFormatter = DateFormatter()
+        actualDateFormatter.timeStyle = .none
+        actualDateFormatter.dateStyle = .short
+        
+        let objectDate = actualDateFormatter.date(from: date)
+        
+        let calender = Calendar.current
+        
+        
+        let dateArray = date.split(separator: "/")
+        print(dateArray[0])
+        print(dateArray[1])
+        
+        
+        
+        return daysRemaining
+    }*/
+    
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
@@ -88,7 +123,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let inviCell = inviTableView.dequeueReusableCell(withIdentifier: "inviCell", for: indexPath) as! HomeInviTableViewCell
-        inviCell.costLabel.text = String(individualSubs[indexPath.row].price)
+        inviCell.costLabel.text = String(individualSubs[indexPath.row].price) + " dkk,-"
         inviCell.imageLabel.image = individualSubs[indexPath.row].image
         inviCell.remainingLabel.text = individualSubs[indexPath.row].date
         

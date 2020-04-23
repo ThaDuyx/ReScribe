@@ -15,6 +15,7 @@ target 'ReScribe' do
   pod 'Firebase/Storage'
   pod 'FirebaseUI/Storage'
   pod 'SDWebImage'
+  pod 'EFCountingLabel'
   # add pods for any other desired Firebase products
   # https://firebase.google.com/docs/ios/setup#available-pods
 

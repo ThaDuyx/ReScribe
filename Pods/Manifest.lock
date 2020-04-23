@@ -164,6 +164,7 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.3):
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
+  - EFCountingLabel (5.1.1)
   - Firebase/Analytics (6.18.0):
     - Firebase/Core
   - Firebase/Auth (6.18.0):
@@ -296,6 +297,7 @@ PODS:
   - SDWebImage/Core (5.7.2)
 
 DEPENDENCIES:
+  - EFCountingLabel
   - Firebase/Analytics
   - Firebase/Auth
   - Firebase/Core
@@ -309,6 +311,7 @@ SPEC REPOS:
   trunk:
     - abseil
     - BoringSSL-GRPC
+    - EFCountingLabel
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -336,6 +339,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   abseil: 18063d773f5366ff8736a050fe035a28f635fd27
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
+  EFCountingLabel: 605358591a67a3c92feb7ec32486bfab4a30e2c9
   Firebase: 0490eca762a72e4f1582319539153897f1508dee
   FirebaseAnalytics: 058d71e714a1a6804d9e0f25e3bb18e377a51579
   FirebaseAuth: 5ce2b03a3d7fe56b7a6e4c5ec7ff1522890b1d6f
@@ -360,6 +364,6 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SDWebImage: d9ea4959d99c52276dfada481987018fcaea3d58
 
-PODFILE CHECKSUM: a8d0dc5bbf1dbdd4f5040e7848a6ec754fd176a7
+PODFILE CHECKSUM: 12da4d668e95b8853a3d2a16c1258e5aa00dd6ca
 
 COCOAPODS: 1.9.0

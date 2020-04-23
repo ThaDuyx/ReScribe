@@ -92,7 +92,7 @@ class SubscriptionViewController: UIViewController {
     
     @objc func doneTapped() {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
+        dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
         datePick.text = dateFormatter.string(from: datePicker.date)
         self.view.endEditing(true)
