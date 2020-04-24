@@ -23,13 +23,11 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var inviTableView: UITableView!
     @IBOutlet weak var groupTableView: UITableView!
     
-    
-    
+    //For database queries
     let storage = Storage.storage()
     let userID = Auth.auth().currentUser!.uid
     let db = Firestore.firestore()
     var individualSubs = [Subscription]()
-    var firstload = false
 
     
     override func viewDidLoad() {
