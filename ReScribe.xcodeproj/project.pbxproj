@@ -31,6 +31,7 @@
 		83D1F2CC24507A2D00FE8F4F /* IndvidualTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D1F2CB24507A2D00FE8F4F /* IndvidualTableViewCell.swift */; };
 		83D1F2CE2450813900FE8F4F /* IndvidualUpcomingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D1F2CD2450813900FE8F4F /* IndvidualUpcomingViewController.swift */; };
 		83D1F2D02451E3B200FE8F4F /* ViewSubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D1F2CF2451E3B200FE8F4F /* ViewSubscriptionViewController.swift */; };
+		83D1F2D22453062900FE8F4F /* ViewSubscriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D1F2D12453062900FE8F4F /* ViewSubscriptionTableViewCell.swift */; };
 		89CE335F3C40AC7E7D97E203 /* Pods_ReScribe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556AD07E50692B4303D34380 /* Pods_ReScribe.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		83D1F2CB24507A2D00FE8F4F /* IndvidualTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndvidualTableViewCell.swift; sourceTree = "<group>"; };
 		83D1F2CD2450813900FE8F4F /* IndvidualUpcomingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndvidualUpcomingViewController.swift; sourceTree = "<group>"; };
 		83D1F2CF2451E3B200FE8F4F /* ViewSubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewSubscriptionViewController.swift; sourceTree = "<group>"; };
+		83D1F2D12453062900FE8F4F /* ViewSubscriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewSubscriptionTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +167,7 @@
 				83D1F2C724504D9D00FE8F4F /* HomeGrpTableViewCell.swift */,
 				83D1F2CD2450813900FE8F4F /* IndvidualUpcomingViewController.swift */,
 				83D1F2CF2451E3B200FE8F4F /* ViewSubscriptionViewController.swift */,
+				83D1F2D12453062900FE8F4F /* ViewSubscriptionTableViewCell.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				83D1F2C824504D9D00FE8F4F /* HomeGrpTableViewCell.swift in Sources */,
 				83D1F2C624504A2A00FE8F4F /* HomeInviTableViewCell.swift in Sources */,
 				8305F44A244DDD4200FEBE51 /* TabBarController.swift in Sources */,
+				83D1F2D22453062900FE8F4F /* ViewSubscriptionTableViewCell.swift in Sources */,
 				6AEBEA30241672D6008D14D5 /* SceneDelegate.swift in Sources */,
 				6A23119B2449FEF3000E1B09 /* Subscriptions.swift in Sources */,
 				83D1F2C4244F0AE000FE8F4F /* selectedPlanTableViewCell.swift in Sources */,
