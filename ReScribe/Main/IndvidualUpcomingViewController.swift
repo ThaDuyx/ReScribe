@@ -32,7 +32,8 @@ class IndvidualUpcomingViewController: UIViewController {
         self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
         self.addButtonUI.round(corners: [.bottomLeft, .bottomRight, .topRight, .topLeft], cornerRadius: 20)
         self.viewTableView.round(corners: .allCorners, cornerRadius: 10)
-        
+        individualAmount.counter.timingFunction = EFTimingFunction.easeOut(easingRate: 3)
+
         let storageRef = storage.reference()
         db.collection("users").document(userID).collection("Subs").addSnapshotListener { (snapshot, error) in
             if let error = error {
@@ -48,13 +49,14 @@ class IndvidualUpcomingViewController: UIViewController {
                         let subGenre = newData["genre"] as! String
                         let subStatus = newData["status"] as! Bool
                         let subDate = newData["date"] as! String
+                        let subID = newData["subid"] as! String
                         let starsRef = storageRef.child("Images/" + companyName  + ".jpg")
                         starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
                             if let error = error {
                               print("Error \(error)")
                             } else {
                                 let logoImage = UIImage(data: data!)!
-                                self.individualSubs.append(Subscription(name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate)!)
+                                self.individualSubs.append(Subscription(id: subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate)!)
                                 DispatchQueue.main.async {
                                     self.indvidualTableView.reloadData()
                                     let individualSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
@@ -70,10 +72,33 @@ class IndvidualUpcomingViewController: UIViewController {
                             }
                         }
                     }
+                    if change.type == .modified{
+                        let updatedData = change.document.data()
+                        for sub in self.individualSubs{
+                            if updatedData["subid"] as! String == sub.id{
+                                if sub.status == true {
+                                    sub.status = false
+                                } else {
+                                    sub.status = true
+                                }
+                            }
+                        }
+                        self.indvidualTableView.reloadData()
+                        let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
+                        self.individualAmount.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
+                        self.individualAmount.completionBlock = { () in
+                            self.individualAmount.text = String(newSubAmount) + " dkk,-"
+                        }
+                    }
+                    if change.type == .removed{
+                        let removedData = change.document.data()
+                        print(removedData)
+                    }
                 })
             }
         }
     }
+    
     func calculateTotalAmount(allSubs: [Subscription]) -> Int{
         var totalamount = 0
         for sub in allSubs{
@@ -88,9 +113,17 @@ class IndvidualUpcomingViewController: UIViewController {
 extension IndvidualUpcomingViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        rowIndex = indexPath.row
+        rowIndex = indexPath.section
+
         
         performSegue(withIdentifier: "viewSubs", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "viewSubs"{
+            let vc = segue.destination as! ViewSubscriptionViewController
+            vc.selectedSub = individualSubs[rowIndex]
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -115,8 +148,15 @@ extension IndvidualUpcomingViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = indvidualTableView.dequeueReusableCell(withIdentifier: "upcomingPayments", for: indexPath) as! IndvidualTableViewCell
-        cell.costLabel.text = String(individualSubs[indexPath.section].price) + ",-  dkk"
-        cell.timeLabel.text = individualSubs[indexPath.section].date + "    days"
+        
+        
+        if individualSubs[indexPath.section].status != true{
+            cell.timeLabel.text = "Deactivated"
+            cell.costLabel.text = " "
+            } else {
+            cell.costLabel.text = String(individualSubs[indexPath.section].price) + ",-  dkk"
+            cell.timeLabel.text = individualSubs[indexPath.section].date + "    days"
+        }
         cell.imageLabel.image = individualSubs[indexPath.section].image
         
         cell.layer.cornerRadius = 8

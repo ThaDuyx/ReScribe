@@ -35,6 +35,7 @@ class HomeViewController: UIViewController {
         self.inviView.round(corners: [.allCorners], cornerRadius: 10)
         self.groupView.round(corners: [.allCorners], cornerRadius: 10)
         self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
+        self.totalAmountLabel.counter.timingFunction = EFTimingFunction.easeOut(easingRate: 3)
         
         let storageRef = storage.reference()
         db.collection("users").document(userID).collection("Subs").addSnapshotListener { (snapshot, error) in
@@ -46,6 +47,7 @@ class HomeViewController: UIViewController {
                     if change.type == .added {
                         let newData = change.document.data()
                         let companyName = newData["company"] as! String
+                        let subID = newData["subid"] as! String
                         let subPlan = newData["plan"] as! String
                         let subPrice = newData["price"] as! Int
                         let subGenre = newData["genre"] as! String
@@ -57,7 +59,7 @@ class HomeViewController: UIViewController {
                               print("Error \(error)")
                             } else {
                                 let logoImage = UIImage(data: data!)!
-                                self.individualSubs.append(Subscription(name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate)!)
+                                self.individualSubs.append(Subscription(id:subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate)!)
                                 DispatchQueue.main.async {
                                     self.inviTableView.reloadData()
                                     let totalSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
@@ -65,12 +67,49 @@ class HomeViewController: UIViewController {
                                     self.totalAmountLabel.countFromZeroTo(CGFloat(totalSubAmount), withDuration: 1.5)
                                     self.totalAmountLabel.completionBlock = { () in
                                         self.totalAmountLabel.text = String(totalSubAmount) + " dkk,-"
+                                    
                                     }
-
-                                    //let test = self.calculateRemainingDays(date: subDate)
-                                    //print(test)
                                 }
                             }
+                        }
+                    }
+                    
+                    if change.type == .modified{
+                        let updatedData = change.document.data()
+                        let subID = updatedData["subid"] as! String
+                        if updatedData["status"] as! Bool != true{
+                            for sub in self.individualSubs{
+                                if subID == sub.id{
+                                    if sub.status == true {
+                                    sub.status = false
+                                    self.individualSubs.removeAll { $0.id == subID }
+                                        
+                                    }
+                                }
+                            }
+                        } else {
+                            let imageRef = updatedData["company"] as! String
+                            let starsRef = storageRef.child("Images/" + imageRef  + ".jpg")
+                            starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
+                                let logoImage = UIImage(data: data!)!
+                                self.individualSubs.append(Subscription(id: updatedData["subid"] as! String , name: updatedData["company"] as! String, image: logoImage, plan: updatedData["plan"] as! String, price: updatedData["price"] as! Int, genre: updatedData["genre"] as! String, status: updatedData["status"] as! Bool, date: updatedData["date"] as! String)!)
+                                DispatchQueue.main.async {
+                                    self.inviTableView.reloadData()
+                                    let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
+                                        self.totalAmountLabel.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
+                                        self.totalAmountLabel.completionBlock = { () in
+                                            self.totalAmountLabel.text = String(newSubAmount) + " dkk,-"
+                                    }
+                                }
+                            }
+                        }
+         
+                        self.inviTableView.reloadData()
+                        let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
+                        self.totalAmountLabel.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
+                        self.totalAmountLabel.completionBlock = { () in
+                            self.totalAmountLabel.text = String(newSubAmount) + " dkk,-"
+                            
                         }
                     }
                 })
@@ -87,29 +126,6 @@ class HomeViewController: UIViewController {
         }
         return totalamount
     }
-    
-   /* func calculateRemainingDays(date: String) -> Int{
-        let daysRemaining = 0
-
-        let actualDate = Date()
-        let actualDateFormatter = DateFormatter()
-        actualDateFormatter.timeStyle = .none
-        actualDateFormatter.dateStyle = .short
-        
-        let objectDate = actualDateFormatter.date(from: date)
-        
-        let calender = Calendar.current
-        
-        
-        let dateArray = date.split(separator: "/")
-        print(dateArray[0])
-        print(dateArray[1])
-        
-        
-        
-        return daysRemaining
-    }*/
-    
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
@@ -123,8 +139,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
         inviCell.costLabel.text = String(individualSubs[indexPath.row].price) + " dkk,-"
         inviCell.imageLabel.image = individualSubs[indexPath.row].image
         inviCell.remainingLabel.text = individualSubs[indexPath.row].date
-        
+    
         return inviCell
     }
 }
-

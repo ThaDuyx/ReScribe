@@ -45,7 +45,6 @@ class SubscriptionViewController: UIViewController {
         self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
         self.addBtn.round(corners: [.allCorners], cornerRadius: 10)
         //Genre query
-        //Maybe place db here
         db.collection("Subscriptions").document(headerName).getDocument { (document, err) in
             if let data = document?.data(){
                 self.genreString = data["Genre"] as! String
@@ -107,13 +106,21 @@ class SubscriptionViewController: UIViewController {
         if datePick.text!.isEmpty{
             print("Cannot save before date is added")
         } else {
-            db.collection("users").document(userID).collection("Subs").addDocument(data: ["company":headerName, "genre":genreString, "date":datePick.text!, "status":true , "plan":planName, "price":price]) { (error) in
+            let newSubDocument = db.collection("users").document(userID).collection("Subs").document()
+            newSubDocument.setData(["subid":newSubDocument.documentID, "company":headerName, "genre":genreString, "date":datePick.text!, "status":true , "plan":planName, "price":price]) { (error) in
+                if error != nil {
+                    print("Oh no")
+                } else {
+                    self.navigationController?.popToRootViewController(animated: true)
+                }
+            }
+            /*db.collection("users").document(userID).collection("Subs").addDocument(data: ["company":headerName, "genre":genreString, "date":datePick.text!, "status":true , "plan":planName, "price":price]) { (error) in
                 if error != nil {
                     
                 } else {
                     self.navigationController?.popToRootViewController(animated: true)
                 }
-            }
+            }*/
         }
     }
 }
