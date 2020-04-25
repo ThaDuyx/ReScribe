@@ -39,6 +39,24 @@ class ViewSubscriptionViewController: UIViewController {
     }
     
     @IBAction func removeTapped(_ sender: Any) {
+        
+        let refreshAlert = UIAlertController(title: "Remove", message: "Are you sure you want to delete this subscription?", preferredStyle: UIAlertController.Style.alert)
+
+        refreshAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
+            let db = Firestore.firestore()
+            let userID = Auth.auth().currentUser!.uid
+            db.collection("users").document(userID).collection("Subs").document(self.selectedSub!.id).delete()
+            self.navigationController?.popToRootViewController(animated: true)
+            print("Deleting")
+        }))
+
+        refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+          print("Handle Cancel Logic here")
+        }))
+
+        present(refreshAlert, animated: true, completion: nil)
+        
+        
     }
     
     

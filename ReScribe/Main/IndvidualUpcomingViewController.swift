@@ -92,7 +92,18 @@ class IndvidualUpcomingViewController: UIViewController {
                     }
                     if change.type == .removed{
                         let removedData = change.document.data()
-                        print(removedData)
+                        let removedSubId = removedData["subid"] as! String
+                        for sub in self.individualSubs{
+                            if removedSubId == sub.id{
+                                self.individualSubs.removeAll { $0.id == removedSubId }
+                                self.indvidualTableView.reloadData()
+                                let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
+                                self.individualAmount.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
+                                self.individualAmount.completionBlock = { () in
+                                    self.individualAmount.text = String(newSubAmount) + " dkk,-"
+                                }
+                            }
+                        }
                     }
                 })
             }

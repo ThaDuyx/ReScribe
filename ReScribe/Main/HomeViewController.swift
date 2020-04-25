@@ -112,6 +112,22 @@ class HomeViewController: UIViewController {
                             
                         }
                     }
+                    if change.type == .removed{
+                        let removedData = change.document.data()
+                        let removedSubId = removedData["subid"] as! String
+                        for sub in self.individualSubs{
+                            if removedSubId == sub.id{
+                                self.individualSubs.removeAll { $0.id == removedSubId }
+                                self.inviTableView.reloadData()
+                                let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
+                                self.totalAmountLabel.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
+                                self.totalAmountLabel.completionBlock = { () in
+                                    self.totalAmountLabel.text = String(newSubAmount) + " dkk,-"
+                                    
+                                }
+                            }
+                        }
+                    }
                 })
             }
         }
