@@ -46,22 +46,25 @@ class HomeViewController: UIViewController {
                 newDocument?.documentChanges.forEach({ change in
                     if change.type == .added {
                         let newData = change.document.data()
-                        print(newData)
                         let companyName = newData["company"] as! String
-                        let subPlan = newData["plan"] as! String
-                        let subPrice = newData["price"] as! Int
-                        let subGenre = newData["genre"] as! String
-                        let subStatus = newData["status"] as! Bool
-                        let subID = newData["subid"] as! String
-                        let subDate = newData["date"] as! String
                         let starsRef = storageRef.child("Images/" + companyName  + ".jpg")
                         starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
                             if let error = error {
                               print("Error \(error)")
                             } else {
                                 let logoImage = UIImage(data: data!)!
-                                self.individualSubs.append(Subscription(id:subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate)!)
                                 DispatchQueue.main.async {
+                                    let newData = change.document.data()
+                                    let companyName = newData["company"] as! String
+                                    let subPlan = newData["plan"] as! String
+                                    let subPrice = newData["price"] as! Int
+                                    let subGenre = newData["genre"] as! String
+                                    let subStatus = newData["status"] as! Bool
+                                    let subID = newData["subid"] as! String
+                                    let subDate = newData["date"] as! String
+                                    self.individualSubs.append(Subscription(id:subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate)!)
+    
+                                    
                                     self.inviTableView.reloadData()
                                     let totalSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
                                     //Self counting label from this repo: https://github.com/EFPrefix/EFCountingLabel
