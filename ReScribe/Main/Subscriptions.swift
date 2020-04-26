@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class Subscription {
+    var id: String
     var name: String
     var image: UIImage
     var plan: String
@@ -18,7 +19,8 @@ class Subscription {
     var status: Bool
     var date: String
     
-    init?(name: String, image: UIImage, plan: String, price: Int, genre: String, status: Bool, date: String){
+    init?(id: String, name: String, image: UIImage, plan: String, price: Int, genre: String, status: Bool, date: String){
+        self.id = id
         self.name = name
         self.plan = plan
         self.image = image
