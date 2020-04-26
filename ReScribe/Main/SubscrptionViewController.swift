@@ -114,18 +114,9 @@ class SubscriptionViewController: UIViewController {
                     self.navigationController?.popToRootViewController(animated: true)
                 }
             }
-            /*db.collection("users").document(userID).collection("Subs").addDocument(data: ["company":headerName, "genre":genreString, "date":datePick.text!, "status":true , "plan":planName, "price":price]) { (error) in
-                if error != nil {
-                    
-                } else {
-                    self.navigationController?.popToRootViewController(animated: true)
-                }
-            }*/
         }
     }
 }
-
-
 
 extension SubscriptionViewController: UITableViewDataSource, UITableViewDelegate{
 
@@ -136,9 +127,6 @@ extension SubscriptionViewController: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = planView.dequeueReusableCell(withIdentifier: "plansCell", for: indexPath) as! selectedPlanTableViewCell
-        
-        /*cell.textLabel?.text = subPlans[indexPath.row].name
-        cell.detailTextLabel?.text = String(subPlans[indexPath.row].price)*/
         cell.packagePlanLabel.text = subPlans[indexPath.row].name
         cell.amountLabel.text = String(subPlans[indexPath.row].price)
         return cell

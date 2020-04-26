@@ -46,12 +46,13 @@ class HomeViewController: UIViewController {
                 newDocument?.documentChanges.forEach({ change in
                     if change.type == .added {
                         let newData = change.document.data()
+                        print(newData)
                         let companyName = newData["company"] as! String
-                        let subID = newData["subid"] as! String
                         let subPlan = newData["plan"] as! String
                         let subPrice = newData["price"] as! Int
                         let subGenre = newData["genre"] as! String
                         let subStatus = newData["status"] as! Bool
+                        let subID = newData["subid"] as! String
                         let subDate = newData["date"] as! String
                         let starsRef = storageRef.child("Images/" + companyName  + ".jpg")
                         starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
