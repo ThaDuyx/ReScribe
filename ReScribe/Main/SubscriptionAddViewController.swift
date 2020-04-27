@@ -36,6 +36,7 @@ class SubscriptionAddViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.searchBarUI.round(corners: [.bottomLeft, .bottomRight, .topLeft, .topRight], cornerRadius: 10)
+        self.tblView.round(corners: .allCorners, cornerRadius: 10)
         self.navigationController?.navigationBar.barTintColor = UIColor.init(netHex: 0x353535)
         
         let db = Firestore.firestore()

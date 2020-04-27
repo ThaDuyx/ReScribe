@@ -21,6 +21,7 @@ class SubscriptionViewController: UIViewController {
     @IBOutlet weak var imageForSub: UIImageView!
     @IBOutlet weak var datePick: UITextField!
     @IBOutlet weak var addBtn: UIButton!
+    @IBOutlet weak var viewOfContent: UIView!
     
     let userID = Auth.auth().currentUser!.uid
     let db = Firestore.firestore()
@@ -44,6 +45,7 @@ class SubscriptionViewController: UIViewController {
         imageView.sd_setImage(with: starsRef, placeholderImage: placeholderImage)
         self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
         self.addBtn.round(corners: [.allCorners], cornerRadius: 10)
+        self.viewOfContent.round(corners: .allCorners, cornerRadius: 10)
         //Genre query
         db.collection("Subscriptions").document(headerName).getDocument { (document, err) in
             if let data = document?.data(){
@@ -119,22 +121,41 @@ class SubscriptionViewController: UIViewController {
 }
 
 extension SubscriptionViewController: UITableViewDataSource, UITableViewDelegate{
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+         return subPlans.count
+     }
 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return subPlans.count
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return cellSpacingHeight
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.clear
+        return headerView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = planView.dequeueReusableCell(withIdentifier: "plansCell", for: indexPath) as! selectedPlanTableViewCell
-        cell.packagePlanLabel.text = subPlans[indexPath.row].name
-        cell.amountLabel.text = String(subPlans[indexPath.row].price)
+        cell.packagePlanLabel.text = subPlans[indexPath.section].name
+        cell.amountLabel.text = String(subPlans[indexPath.section].price)
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = UIColor.init(netHex: 0x68b2b3)
+        cell.selectedBackgroundView = bgColorView
+        cell.layer.cornerRadius = 8
+        cell.clipsToBounds = true
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        planName = subPlans[indexPath.row].name
-        price = subPlans[indexPath.row].price
+        planName = subPlans[indexPath.section].name
+        price = subPlans[indexPath.section].price
     }
 }
 

@@ -10,8 +10,6 @@ import UIKit
 import Firebase
 import EFCountingLabel
 
-let daysArr = ["1","2"]
-let nnameArr = ["155", "278"]
 let cellSpacingHeight: CGFloat = 5
 
 var datePicker:UIDatePicker = UIDatePicker()
