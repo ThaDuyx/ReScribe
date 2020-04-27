@@ -145,17 +145,33 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+         return individualSubs.count
+     }
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return individualSubs.count
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return cellSpacingHeight
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.clear
+        return headerView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let inviCell = inviTableView.dequeueReusableCell(withIdentifier: "inviCell", for: indexPath) as! HomeInviTableViewCell
-        inviCell.costLabel.text = String(individualSubs[indexPath.row].price) + " dkk,-"
-        inviCell.imageLabel.image = individualSubs[indexPath.row].image
-        inviCell.remainingLabel.text = individualSubs[indexPath.row].date
-    
+        inviCell.costLabel.text = String(individualSubs[indexPath.section].price) + " dkk,-"
+        inviCell.imageLabel.image = individualSubs[indexPath.section].image
+        inviCell.remainingLabel.text = individualSubs[indexPath.section].date
+        inviCell.layer.cornerRadius = 8
+        inviCell.clipsToBounds = true
         return inviCell
     }
 }
