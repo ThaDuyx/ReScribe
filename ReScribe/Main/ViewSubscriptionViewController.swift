@@ -11,7 +11,7 @@ import Firebase
 
 class ViewSubscriptionViewController: UIViewController {
     @IBOutlet weak var infotab: UIView!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet var tableView: UITableView!
     
     //Buttons
     @IBOutlet weak var onOffBtn: UIButton!
@@ -27,13 +27,38 @@ class ViewSubscriptionViewController: UIViewController {
                 }
             }
         } else {
-            db.collection("users").document(userID).collection("Subs").document(selectedSub!.id).setData(["status" : true], merge: true) { (error) in
-                if error != nil {
-                    print("Oops")
-                } else {
-                    self.navigationController?.popToRootViewController(animated: true)
+            
+            //The following code taken from:
+            //https://stackoverflow.com/a/56607279/11614540
+            //With small adjustments
+            let myDatePicker: UIDatePicker = UIDatePicker()
+            myDatePicker.timeZone = .current
+            myDatePicker.frame = CGRect(x: 0, y: 15, width: 270, height: 200)
+            myDatePicker.datePickerMode = .date
+            let alertController = UIAlertController(title: "\n\n\n\n\n\n\n\n\n Pick a new payment date", message: nil, preferredStyle: .alert)
+            alertController.view.addSubview(myDatePicker)
+            let selectAction = UIAlertAction(title: "Ok", style: .default, handler: { _ in
+                
+                //Own code
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = .short
+                dateFormatter.timeStyle = .none
+                let newDate = dateFormatter.string(from: myDatePicker.date)
+                db.collection("users").document(userID).collection("Subs").document(self.selectedSub!.id).setData(["status" : true, "date":newDate], merge: true) { (error) in
+                    if error != nil {
+                        print("Oops")
+                    } else {
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
                 }
-            }
+                //Own code ends
+            })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(selectAction)
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true)
+            //--------------------------------------------
+            //Taken code ends
         }
         
     }
@@ -75,6 +100,7 @@ class ViewSubscriptionViewController: UIViewController {
         self.infotab.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
         self.navigationController?.navigationBar.barTintColor = UIColor.init(netHex: 0x353535)
         
+        
         selectedSubImage.image = selectedSub?.image
         selectedSubHeader.text = selectedSub?.name
         selectedSubGenre.text = selectedSub?.genre
@@ -82,12 +108,13 @@ class ViewSubscriptionViewController: UIViewController {
         selectedSubPrice.text = String(selectedSub!.price)
         if selectedSub?.status == true {
             selectedSubStatus.text = "Active"
+            selectedSubDate.text = selectedSub?.date
             onOffBtn.setTitle("Deactivate", for: .normal)
         } else{
             selectedSubStatus.text = "Deactivated"
+            selectedSubDate.text = "NA"
             onOffBtn.setTitle("Activate", for: .normal)
         }
-        
         
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -98,8 +125,8 @@ class ViewSubscriptionViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
 }
+
 extension ViewSubscriptionViewController: UITableViewDataSource, UITableViewDelegate {
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         rowIndex = indexPath.row
