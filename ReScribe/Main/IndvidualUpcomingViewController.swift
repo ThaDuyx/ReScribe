@@ -73,41 +73,17 @@ class IndvidualUpcomingViewController: UIViewController {
                     }
                     if change.type == .modified{
                         let updatedData = change.document.data()
-                        //let updatedDataID = updatedData["subid"] as! String
                         for sub in self.individualSubs{
                             if updatedData["subid"] as! String == sub.id{
                                 if sub.status == true {
                                     sub.status = false
                                 } else {
                                     sub.status = true
-                                    
-                                    //The following code taken from:
-                                    //https://stackoverflow.com/a/56607279/11614540
-                                    //With small adjustments
-                                    let myDatePicker: UIDatePicker = UIDatePicker()
-                                    myDatePicker.timeZone = .current
-                                    myDatePicker.frame = CGRect(x: 0, y: 15, width: 270, height: 200)
-                                    myDatePicker.datePickerMode = .date
-                                    let alertController = UIAlertController(title: "\n\n\n\n\n\n\n\n\n Pick a new payment date", message: nil, preferredStyle: .alert)
-                                    alertController.view.addSubview(myDatePicker)
-                                    let selectAction = UIAlertAction(title: "Ok", style: .default, handler: { _ in
-                                        //---- Insert database query that saves the new date
-                                        //---- and fix the .modified query on the tableviews
-                                        
-                                        /*self.db.collection("users").document(self.userID).collection("Subs").document(updatedDataID).setData(["date" : "newDate"]) { (error) in
-                                            <#code#>
-                                        }*/
-                                        print("Selected Date: \(myDatePicker.date)")
-                                        //sub.status = true
-                                    })
-                                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                                    alertController.addAction(selectAction)
-                                    alertController.addAction(cancelAction)
-                                    self.present(alertController, animated: true)
-                                    //--------------------------------------------
+                                    sub.date = updatedData["date"] as! String
                                 }
                             }
                         }
+
                         self.indvidualTableView.reloadData()
                         let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
                         self.individualAmount.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
