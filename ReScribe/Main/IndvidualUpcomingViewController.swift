@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import EFCountingLabel
 
-let cellSpacingHeight: CGFloat = 5
+let cellHeight: CGFloat = 5
 
 var datePicker:UIDatePicker = UIDatePicker()
 let toolBar = UIToolbar()
@@ -142,12 +142,10 @@ extension IndvidualUpcomingViewController: UITableViewDataSource, UITableViewDel
          return individualSubs.count
      }
 
-     // Set the spacing between sections
      func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-         return cellSpacingHeight
+         return cellHeight
      }
 
-     // Make the background color show through
      func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
          let headerView = UIView()
          headerView.backgroundColor = UIColor.clear

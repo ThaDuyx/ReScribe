@@ -138,13 +138,12 @@ extension ViewSubscriptionViewController: UITableViewDataSource, UITableViewDele
          return 1
      }
 
-     // Set the spacing between sections
-     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-         return cellSpacingHeight
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+         return cellHeight
      }
 
-     // Make the background color show through
-     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
          let headerView = UIView()
          headerView.backgroundColor = UIColor.clear
          return headerView
