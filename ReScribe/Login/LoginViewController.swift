@@ -23,7 +23,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        self.loginBtn.round(corners: .allCorners, cornerRadius: 10)
     }
 
     @IBAction func loginTapped(_ sender: Any) {
