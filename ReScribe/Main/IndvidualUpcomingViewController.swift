@@ -202,7 +202,7 @@ extension IndvidualUpcomingViewController: UITableViewDataSource, UITableViewDel
             cell.upcomingCostLabel.text = " "
             } else {
             cell.upcomingCostLabel.text = String(individualSubs[indexPath.section].price) + ",-  dkk"
-            cell.upcomingTimeLabel.text = individualSubs[indexPath.section].date + "    days"
+            cell.upcomingTimeLabel.text = String(individualSubs[indexPath.section].remainingDays) + "    days"
         }
         cell.upcomingImage.image = individualSubs[indexPath.section].image
         

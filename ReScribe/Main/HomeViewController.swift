@@ -202,7 +202,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
         let inviCell = inviTableView.dequeueReusableCell(withIdentifier: "inviCell", for: indexPath) as! TableViewCell
         inviCell.homeIndvidualCostLabel.text = String(individualSubs[indexPath.section].price) + " dkk,-"
         inviCell.homeIndvidualImage.image = individualSubs[indexPath.section].image
-        inviCell.homeIndvidualRemainingLabel.text = individualSubs[indexPath.section].date
+        inviCell.homeIndvidualRemainingLabel.text = String(individualSubs[indexPath.section].remainingDays)
         inviCell.layer.cornerRadius = 8
         inviCell.clipsToBounds = true
         return inviCell
