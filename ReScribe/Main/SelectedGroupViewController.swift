@@ -52,8 +52,8 @@ extension SelectedGroupViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "upcomingPayments", for: indexPath) as! IndvidualTableViewCell
-        cell.costLabel.text = subsNameArr[indexPath.section]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "upcomingPayments", for: indexPath) as! TableViewCell
+        cell.selectedGroupTimeLabel.text = subsNameArr[indexPath.section]
 
         cell.layer.cornerRadius = 8
         cell.clipsToBounds = true

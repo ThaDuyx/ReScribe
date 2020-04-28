@@ -154,9 +154,9 @@ extension ViewSubscriptionViewController: UITableViewDataSource, UITableViewDele
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "plansCell", for: indexPath) as! ViewSubscriptionTableViewCell
-        cell.amountLabel.text = String(selectedSub!.price) + ",-  dkk"
-        cell.packagePlanLabel.text = selectedSub?.plan
+        let cell = tableView.dequeueReusableCell(withIdentifier: "plansCell", for: indexPath) as! TableViewCell
+        cell.viewSubscriptionAmountLabel.text = String(selectedSub!.price) + ",-  dkk"
+        cell.viewSubscriptionPackageLabel.text = selectedSub?.plan
         
         cell.layer.cornerRadius = 8
         cell.clipsToBounds = true

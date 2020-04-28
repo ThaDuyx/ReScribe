@@ -43,7 +43,7 @@ extension GroupViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = groupTableView.dequeueReusableCell(withIdentifier: "groups", for: indexPath) as! GroupTableViewCell
+        let cell = groupTableView.dequeueReusableCell(withIdentifier: "groups", for: indexPath) as! TableViewCell
         cell.groupNameLabel.text = subsNameArr[indexPath.section]
 
         cell.layer.cornerRadius = 8
