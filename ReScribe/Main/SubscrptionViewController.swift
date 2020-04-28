@@ -105,8 +105,13 @@ class SubscriptionViewController: UIViewController {
     
     @IBAction func saveBtnTapped(_ sender: Any) {
         
-        if datePick.text!.isEmpty{
-            print("Cannot save before date is added")
+        if datePick.text!.isEmpty || planName == ""{
+            
+            let refreshAlert = UIAlertController(title: "Error", message: "Pick a date and payment plan to continue", preferredStyle: UIAlertController.Style.alert)
+            refreshAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { (action: UIAlertAction!) in
+                
+            }))
+             present(refreshAlert, animated: true, completion: nil)
         } else {
             let newSubDocument = db.collection("users").document(userID).collection("Subs").document()
             newSubDocument.setData(["subid":newSubDocument.documentID, "company":headerName, "genre":genreString, "date":datePick.text!, "status":true , "plan":planName, "price":price]) { (error) in
