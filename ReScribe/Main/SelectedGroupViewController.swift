@@ -1,27 +1,36 @@
 //
-//  GroupViewController.swift
+//  SelectedGroupViewController.swift
 //  ReScribe
 //
-//  Created by Christoffer Detlef on 09/03/2020.
+//  Created by Christoffer Detlef on 28/04/2020.
 //  Copyright © 2020 Simon Andersen. All rights reserved.
 //
 
 import UIKit
 
-class GroupViewController: UIViewController {
-
-    @IBOutlet weak var groupTableView: UITableView!
-    @IBOutlet weak var groupAddButton: UIButton!
-    @IBOutlet weak var infotabView: UIView!
+class SelectedGroupViewController: UIViewController {
+    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.barTintColor = UIColor.init(netHex: 0x353535)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-        self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
-        self.groupAddButton.round(corners: .allCorners, cornerRadius: 20)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
 }
 
-extension GroupViewController: UITableViewDataSource, UITableViewDelegate{
+extension SelectedGroupViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        rowIndex = indexPath.section
+
+        
+        performSegue(withIdentifier: "viewSubs", sender: self)
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
          return subsNameArr.count
@@ -43,17 +52,13 @@ extension GroupViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = groupTableView.dequeueReusableCell(withIdentifier: "groups", for: indexPath) as! TableViewCell
-        cell.groupNameLabel.text = subsNameArr[indexPath.section]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "upcomingPayments", for: indexPath) as! TableViewCell
+        cell.selectedGroupTimeLabel.text = subsNameArr[indexPath.section]
 
         cell.layer.cornerRadius = 8
         cell.clipsToBounds = true
         return cell
     }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        rowIndex = indexPath.row
-        
-        performSegue(withIdentifier: "add", sender: self)
-    }
+    
+    
 }
-

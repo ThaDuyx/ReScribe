@@ -189,7 +189,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return cellSpacingHeight
+        return cellHeight
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -199,10 +199,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let inviCell = inviTableView.dequeueReusableCell(withIdentifier: "inviCell", for: indexPath) as! HomeInviTableViewCell
-        inviCell.costLabel.text = String(individualSubs[indexPath.section].price) + " dkk,-"
-        inviCell.imageLabel.image = individualSubs[indexPath.section].image
-        inviCell.remainingLabel.text = String(individualSubs[indexPath.section].remainingDays)
+        let inviCell = inviTableView.dequeueReusableCell(withIdentifier: "inviCell", for: indexPath) as! TableViewCell
+        inviCell.homeIndvidualCostLabel.text = String(individualSubs[indexPath.section].price) + " dkk,-"
+        inviCell.homeIndvidualImage.image = individualSubs[indexPath.section].image
+        inviCell.homeIndvidualRemainingLabel.text = individualSubs[indexPath.section].date
         inviCell.layer.cornerRadius = 8
         inviCell.clipsToBounds = true
         return inviCell

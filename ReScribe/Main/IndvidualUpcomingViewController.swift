@@ -10,8 +10,6 @@ import UIKit
 import Firebase
 import EFCountingLabel
 
-let cellSpacingHeight: CGFloat = 5
-
 var datePicker:UIDatePicker = UIDatePicker()
 let toolBar = UIToolbar()
 
@@ -181,12 +179,10 @@ extension IndvidualUpcomingViewController: UITableViewDataSource, UITableViewDel
          return individualSubs.count
      }
 
-     // Set the spacing between sections
      func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-         return cellSpacingHeight
+         return cellHeight
      }
 
-     // Make the background color show through
      func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
          let headerView = UIView()
          headerView.backgroundColor = UIColor.clear
@@ -198,17 +194,17 @@ extension IndvidualUpcomingViewController: UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = indvidualTableView.dequeueReusableCell(withIdentifier: "upcomingPayments", for: indexPath) as! IndvidualTableViewCell
+        let cell = indvidualTableView.dequeueReusableCell(withIdentifier: "upcomingPayments", for: indexPath) as! TableViewCell
         
         
         if individualSubs[indexPath.section].status != true{
-            cell.timeLabel.text = "Deactivated"
-            cell.costLabel.text = " "
+            cell.upcomingTimeLabel.text = "Deactivated"
+            cell.upcomingCostLabel.text = " "
             } else {
-            cell.costLabel.text = String(individualSubs[indexPath.section].price) + ",-  dkk"
-            cell.timeLabel.text = String(individualSubs[indexPath.section].remainingDays) + "    days"
+            cell.upcomingCostLabel.text = String(individualSubs[indexPath.section].price) + ",-  dkk"
+            cell.upcomingTimeLabel.text = individualSubs[indexPath.section].date + "    days"
         }
-        cell.imageLabel.image = individualSubs[indexPath.section].image
+        cell.upcomingImage.image = individualSubs[indexPath.section].image
         
         cell.layer.cornerRadius = 8
         cell.clipsToBounds = true

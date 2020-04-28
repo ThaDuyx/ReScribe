@@ -141,13 +141,12 @@ extension SubscriptionViewController: UITableViewDataSource, UITableViewDelegate
          return subPlans.count
      }
 
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return cellSpacingHeight
+        return cellHeight
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -157,9 +156,9 @@ extension SubscriptionViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = planView.dequeueReusableCell(withIdentifier: "plansCell", for: indexPath) as! selectedPlanTableViewCell
-        cell.packagePlanLabel.text = subPlans[indexPath.section].name
-        cell.amountLabel.text = String(subPlans[indexPath.section].price)
+        let cell = planView.dequeueReusableCell(withIdentifier: "plansCell", for: indexPath) as! TableViewCell
+        cell.subscriptionPackageLabel.text = subPlans[indexPath.section].name
+        cell.subscriptionAmountLabel.text = String(subPlans[indexPath.section].price)
         let bgColorView = UIView()
         bgColorView.backgroundColor = UIColor.init(netHex: 0x68b2b3)
         cell.selectedBackgroundView = bgColorView

@@ -1,5 +1,5 @@
 //
-//  GroupTableViewCell.swift
+//  GroupMemberTableViewCell.swift
 //  ReScribe
 //
 //  Created by Christoffer Detlef on 28/04/2020.
@@ -8,12 +8,11 @@
 
 import UIKit
 
-class GroupTableViewCell: UITableViewCell {
+class GroupMemberTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var groupNameLabel: UILabel!
+    @IBOutlet weak var groupMemberLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
 }
