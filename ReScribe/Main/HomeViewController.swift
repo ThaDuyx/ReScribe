@@ -53,15 +53,19 @@ class HomeViewController: UIViewController {
                         let subStatus = newData["status"] as! Bool
                         let subID = newData["subid"] as! String
                         let subDate = newData["date"] as! String
+                        let subNextDate = newData["nextdate"] as! String
                         let starsRef = storageRef.child("Images/" + companyName  + ".jpg")
+                        let remaining = self.calculateDatesRemaining(dateString: subNextDate)
                         starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
                             if let error = error {
                               print("Error \(error)")
                             } else {
                                 let logoImage = UIImage(data: data!)!
-                                self.individualSubs.append(Subscription(id:subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate)!)
+                                if subStatus == true {
+                                    self.individualSubs.append(Subscription(id:subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: remaining)!)
+                                }
                                 DispatchQueue.main.async {
-                                    
+                                    self.sortSubscriptions()
                                     self.inviTableView.reloadData()
                                     let totalSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
                                     //Self counting label from this repo: https://github.com/EFPrefix/EFCountingLabel
@@ -89,11 +93,14 @@ class HomeViewController: UIViewController {
                             }
                         } else {
                             let imageRef = updatedData["company"] as! String
+                            let dateRef = updatedData["nextdate"] as! String
+                            let remaining = self.calculateDatesRemaining(dateString: dateRef)
                             let starsRef = storageRef.child("Images/" + imageRef  + ".jpg")
                             starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
                                 let logoImage = UIImage(data: data!)!
-                                self.individualSubs.append(Subscription(id: updatedData["subid"] as! String , name: updatedData["company"] as! String, image: logoImage, plan: updatedData["plan"] as! String, price: updatedData["price"] as! Int, genre: updatedData["genre"] as! String, status: updatedData["status"] as! Bool, date: updatedData["date"] as! String)!)
+                                self.individualSubs.append(Subscription(id: updatedData["subid"] as! String , name: updatedData["company"] as! String, image: logoImage, plan: updatedData["plan"] as! String, price: updatedData["price"] as! Int, genre: updatedData["genre"] as! String, status: updatedData["status"] as! Bool, date: updatedData["date"] as! String, nextdate: updatedData["nextdate"] as! String, remainingDays: remaining)!)
                                 DispatchQueue.main.async {
+                                    self.sortSubscriptions()
                                     self.inviTableView.reloadData()
                                     let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
                                         self.totalAmountLabel.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
@@ -118,6 +125,7 @@ class HomeViewController: UIViewController {
                         for sub in self.individualSubs{
                             if removedSubId == sub.id{
                                 self.individualSubs.removeAll { $0.id == removedSubId }
+                                self.sortSubscriptions()
                                 self.inviTableView.reloadData()
                                 let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
                                 self.totalAmountLabel.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
@@ -142,6 +150,31 @@ class HomeViewController: UIViewController {
         }
         return totalamount
     }
+    
+    func calculateDatesRemaining(dateString: String) -> Int{
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
+        dateFormatter.dateFormat = "MM/dd/yy"
+        let date = dateFormatter.date(from: dateString)
+        let currentDate = Date()
+        let calender = Calendar.current
+        let daysRemaining = calender.dateComponents([.day], from: currentDate, to: date!).day
+        
+        return daysRemaining!
+    }
+    
+    func sortSubscriptions(){
+        individualSubs.sort { (Subscription1, Subscription2) -> Bool in
+            if Subscription1.remainingDays != Subscription2.remainingDays{
+                return Subscription1.remainingDays < Subscription2.remainingDays
+            } else {
+                return Subscription1.name < Subscription2.name
+            }
+        }
+    }
+    
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
@@ -169,7 +202,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
         let inviCell = inviTableView.dequeueReusableCell(withIdentifier: "inviCell", for: indexPath) as! HomeInviTableViewCell
         inviCell.costLabel.text = String(individualSubs[indexPath.section].price) + " dkk,-"
         inviCell.imageLabel.image = individualSubs[indexPath.section].image
-        inviCell.remainingLabel.text = individualSubs[indexPath.section].date
+        inviCell.remainingLabel.text = String(individualSubs[indexPath.section].remainingDays)
         inviCell.layer.cornerRadius = 8
         inviCell.clipsToBounds = true
         return inviCell

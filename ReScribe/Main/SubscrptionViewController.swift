@@ -30,6 +30,7 @@ class SubscriptionViewController: UIViewController {
     var planName = ""
     var price = 0
     var subPlans = [Plan]()
+    var toBeStoredNextPaymentDate = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,10 +93,19 @@ class SubscriptionViewController: UIViewController {
     }
     
     @objc func doneTapped() {
+        //Creating date and showing it on the label
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
-        datePick.text = dateFormatter.string(from: datePicker.date)
+        let pickedDate = dateFormatter.string(from: datePicker.date)
+        datePick.text = pickedDate
+    
+        //Finding the next payment date 1 month ahead of time
+        let dateObject = datePicker.date
+        let calender = Calendar.current
+        let nextPaymentDate = calender.date(byAdding: .day, value: 31, to: dateObject)
+        toBeStoredNextPaymentDate = dateFormatter.string(from: nextPaymentDate!)
+        
         self.view.endEditing(true)
     }
     
@@ -114,7 +124,7 @@ class SubscriptionViewController: UIViewController {
              present(refreshAlert, animated: true, completion: nil)
         } else {
             let newSubDocument = db.collection("users").document(userID).collection("Subs").document()
-            newSubDocument.setData(["subid":newSubDocument.documentID, "company":headerName, "genre":genreString, "date":datePick.text!, "status":true , "plan":planName, "price":price]) { (error) in
+            newSubDocument.setData(["subid":newSubDocument.documentID, "company":headerName, "genre":genreString, "date":datePick.text!, "status":true , "plan":planName, "price":price, "nextdate":toBeStoredNextPaymentDate]) { (error) in
                 if error != nil {
                     print("Oh no")
                 } else {
