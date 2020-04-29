@@ -27,8 +27,6 @@ extension SelectedGroupViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         rowIndex = indexPath.section
-
-        
         performSegue(withIdentifier: "viewSubs", sender: self)
     }
     
