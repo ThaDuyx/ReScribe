@@ -21,7 +21,6 @@ extension UIColor {
     }
 }
 
-let subsNameArr = ["Viaplay", "Netflix", "HBO", "Youtube", "CBS", "Twitch", "Cmore", "D-play", "Spotify", "Apple Music", "World of Warcraft", "Apple TV", "Discord", "Strava", "Disney+", "Amazon Prime"]
 var rowIndex = 0
 
 class SubscriptionAddViewController: UIViewController {
