@@ -35,7 +35,7 @@ class AddGroupViewController: UIViewController, UITextFieldDelegate {
         newGroup.setData(["name":groupNameTextField.text!, "gid":newGroup.documentID]) { (error) in
             if error != nil{
                 print(error!)
-            } else{
+            } else {
                 let allusers = db.collection("groups").document(newGroup.documentID).collection("users")
                 for eachUser in self.addedusers{
                     allusers.document(eachUser).setData(["name" : eachUser])
