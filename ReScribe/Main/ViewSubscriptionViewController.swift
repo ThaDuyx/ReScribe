@@ -44,7 +44,11 @@ class ViewSubscriptionViewController: UIViewController {
                 dateFormatter.dateStyle = .short
                 dateFormatter.timeStyle = .none
                 let newDate = dateFormatter.string(from: myDatePicker.date)
-                db.collection("users").document(userID).collection("Subs").document(self.selectedSub!.id).setData(["status" : true, "date":newDate], merge: true) { (error) in
+                let calender = Calendar.current
+                let nextPaymentDate = calender.date(byAdding: .day, value: 31, to: myDatePicker.date)
+                let updateNextDate = dateFormatter.string(from: nextPaymentDate!)
+                
+                db.collection("users").document(userID).collection("Subs").document(self.selectedSub!.id).setData(["status" : true, "date":newDate, "nextdate":updateNextDate], merge: true) { (error) in
                     if error != nil {
                         print("Oops")
                     } else {
@@ -92,6 +96,7 @@ class ViewSubscriptionViewController: UIViewController {
     @IBOutlet weak var selectedSubGenre: UILabel!
     @IBOutlet weak var selectedSubDate: UILabel!
     @IBOutlet weak var selectedSubStatus: UILabel!
+    @IBOutlet weak var selectedSubRemainingDays: UILabel!
     
     //Passed object from segue
     var selectedSub : Subscription?
@@ -109,10 +114,12 @@ class ViewSubscriptionViewController: UIViewController {
         if selectedSub?.status == true {
             selectedSubStatus.text = "Active"
             selectedSubDate.text = selectedSub?.date
+            selectedSubRemainingDays.text = String(selectedSub!.remainingDays)
             onOffBtn.setTitle("Deactivate", for: .normal)
         } else{
             selectedSubStatus.text = "Deactivated"
             selectedSubDate.text = "NA"
+            selectedSubRemainingDays.text = "NA"
             onOffBtn.setTitle("Activate", for: .normal)
         }
         

@@ -18,8 +18,10 @@ class Subscription {
     var genre: String
     var status: Bool
     var date: String
+    var nextdate: String
+    var remainingDays: Int
     
-    init?(id: String, name: String, image: UIImage, plan: String, price: Int, genre: String, status: Bool, date: String){
+    init?(id: String, name: String, image: UIImage, plan: String, price: Int, genre: String, status: Bool, date: String, nextdate: String, remainingDays: Int){
         self.id = id
         self.name = name
         self.plan = plan
@@ -28,5 +30,7 @@ class Subscription {
         self.genre = genre
         self.status = status
         self.date = date
+        self.nextdate = nextdate
+        self.remainingDays = remainingDays
     }
 }
