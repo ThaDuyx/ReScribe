@@ -27,6 +27,7 @@ class SubscriptionViewController: UIViewController {
     let db = Firestore.firestore()
     var genreString = ""
     var headerName = ""
+    var root = ""
     var planName = ""
     var price = 0
     var subPlans = [Plan]()
@@ -123,13 +124,26 @@ class SubscriptionViewController: UIViewController {
             }))
              present(refreshAlert, animated: true, completion: nil)
         } else {
-            let newSubDocument = db.collection("users").document(userID).collection("Subs").document()
-            newSubDocument.setData(["subid":newSubDocument.documentID, "company":headerName, "genre":genreString, "date":datePick.text!, "status":true , "plan":planName, "price":price, "nextdate":toBeStoredNextPaymentDate]) { (error) in
-                if error != nil {
-                    print("Oh no")
-                } else {
-                    self.navigationController?.popToRootViewController(animated: true)
+            if root == "personal"{
+                let newSubDocument = db.collection("users").document(userID).collection("Subs").document()
+                newSubDocument.setData(["subid":newSubDocument.documentID, "company":headerName, "genre":genreString, "date":datePick.text!, "status":true , "plan":planName, "price":price, "nextdate":toBeStoredNextPaymentDate]) { (error) in
+                    if error != nil {
+                        print("Oh no")
+                    } else {
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
                 }
+            } else if root == "groups"{
+                let newGroupSubDocument = db.collection("groups").document("6lF6Sg3ncwuHcrWkcrDC").collection("Subs").document()
+                newGroupSubDocument.setData(["subid":newGroupSubDocument.documentID, "company":headerName, "genre":genreString, "date":datePick.text!, "status":true, "plan":planName, "price":price, "nextdate":toBeStoredNextPaymentDate]) { (error) in
+                    if error != nil {
+                        print("Oh no")
+                    } else {
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
+                }
+            } else {
+                print("Something went wrong, try reconnecting to internet")
             }
         }
     }

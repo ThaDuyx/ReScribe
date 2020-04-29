@@ -24,6 +24,7 @@ class IndvidualUpcomingViewController: UIViewController {
     let userID = Auth.auth().currentUser!.uid
     let db = Firestore.firestore()
     var individualSubs = [Subscription]()
+    var root = "personal"
     
     override func viewDidLoad() {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
@@ -42,7 +43,6 @@ class IndvidualUpcomingViewController: UIViewController {
                 newDocument?.documentChanges.forEach({ change in
                     if change.type == .added {
                         let newData = change.document.data()
-                        print(newData)
                         let companyName = newData["company"] as! String
                         let subPlan = newData["plan"] as! String
                         let subPrice = newData["price"] as! Int
@@ -172,6 +172,9 @@ extension IndvidualUpcomingViewController: UITableViewDataSource, UITableViewDel
         if segue.identifier == "viewSubs"{
             let vc = segue.destination as! ViewSubscriptionViewController
             vc.selectedSub = individualSubs[rowIndex]
+        } else {
+            let vc2 = segue.destination as! SubscriptionAddViewController
+            vc2.root = root
         }
     }
     

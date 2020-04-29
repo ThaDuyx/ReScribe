@@ -13,14 +13,10 @@ import UIKit
 class Group {
     var gid:String
     var name:String
-    var subcription = [Subscription]()
-    var group = [Group]()
-    
-    init?(id: String, name: String, subcription: [Subscription], group: [Group]){
+
+    init?(id: String, name: String){
         self.gid = id
         self.name = name
-        self.subcription = subcription
-        self.group = group
     }
 }
 

@@ -7,26 +7,57 @@
 //
 
 import UIKit
+import Firebase
 
 class GroupViewController: UIViewController {
 
     @IBOutlet weak var groupTableView: UITableView!
     @IBOutlet weak var groupAddButton: UIButton!
     @IBOutlet weak var infotabView: UIView!
+    var groupList = [Group]()
+    let db = Firestore.firestore()
+    let userID = Auth.auth().currentUser!.uid
+    var groupIDs = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
         self.groupAddButton.round(corners: .allCorners, cornerRadius: 20)
+        
+
+        db.collection("users").document(userID).collection("Groups").addSnapshotListener { (gSnapshot, error) in
+            let groupChange = gSnapshot
+            groupChange?.documentChanges.forEach({ (DocumentChange) in
+                if DocumentChange.type == .added{
+                    let newGroup = DocumentChange.document.data()
+                    let objectGID = newGroup["gid"] as! String
+                    let objectGName = newGroup["name"] as! String
+                    self.groupList.append(Group(id: objectGID, name: objectGName)!)
+                }
+            })
+            DispatchQueue.main.async {
+                self.groupTableView.reloadData()
+            }
+        }
     }
+
 }
 
 extension GroupViewController: UITableViewDataSource, UITableViewDelegate{
     
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-         return subsNameArr.count
+         return groupList.count
      }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "add"{
+            let vc = segue.destination as! SelectedGroupViewController
+            vc.selectedGroup = groupList[rowIndex]
+        }
+
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -44,12 +75,14 @@ extension GroupViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = groupTableView.dequeueReusableCell(withIdentifier: "groups", for: indexPath) as! TableViewCell
-        cell.groupNameLabel.text = subsNameArr[indexPath.section]
+        cell.groupNameLabel.text = groupList[indexPath.section].name
 
         cell.layer.cornerRadius = 8
         cell.clipsToBounds = true
         return cell
     }
+
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         rowIndex = indexPath.row
         

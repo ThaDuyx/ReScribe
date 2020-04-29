@@ -31,7 +31,7 @@ class SubscriptionAddViewController: UIViewController {
     var searchName = [String]()
     var searching = false
     var subnames = [String]()
-    
+    var root = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         self.searchBarUI.round(corners: [.bottomLeft, .bottomRight, .topLeft, .topRight], cornerRadius: 10)
@@ -89,6 +89,7 @@ extension SubscriptionAddViewController: UITableViewDataSource, UITableViewDeleg
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! SubscriptionViewController
+        vc.root = root
         vc.headerName = subnames[rowIndex]
     }
 }
