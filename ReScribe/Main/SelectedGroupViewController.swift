@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import EFCountingLabel
 
 let subsNameArr = ["Viaplay", "Netflix"]
 
@@ -16,6 +17,7 @@ class SelectedGroupViewController: UIViewController {
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var paymentTableView: UITableView!
     @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var groupExpenses: EFCountingLabel!
     let db = Firestore.firestore()
     let userID = Auth.auth().currentUser!.uid
     let storage = Storage.storage()
@@ -29,7 +31,6 @@ class SelectedGroupViewController: UIViewController {
         self.infoView.round(corners: [.bottomRight, .bottomLeft], cornerRadius: 20)
         self.addButton.round(corners: .allCorners, cornerRadius: 20)
         self.navigationController?.navigationBar.barTintColor = UIColor.init(netHex: 0x353535)
-        print(selectedGroup?.gid)
         let storageRef = storage.reference()
         db.collection("groups").document(selectedGroup!.gid).collection("Subs").addSnapshotListener { (snapshot, error) in
             if let error = error {
@@ -63,6 +64,8 @@ class SelectedGroupViewController: UIViewController {
                                 }
                                 DispatchQueue.main.async {
                                     self.paymentTableView.reloadData()
+                                    let totalGroupExpense = self.calculateTotalAmount(allSubs: self.groupSubscriptions)
+                                    self.groupExpenses.countFrom(0, to: CGFloat(totalGroupExpense))
                                 }
                             }
                         }
@@ -83,6 +86,16 @@ class SelectedGroupViewController: UIViewController {
         let daysRemaining = calender.dateComponents([.day], from: currentDate, to: date!).day
         
         return daysRemaining!
+    }
+    
+    func calculateTotalAmount(allSubs: [Subscription]) -> Int{
+        var totalamount = 0
+        for sub in allSubs{
+            if sub.status == true{
+                totalamount = sub.price + totalamount
+            }
+        }
+        return totalamount
     }
     
     override func viewWillDisappear(_ animated: Bool) {

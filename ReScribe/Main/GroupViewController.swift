@@ -19,6 +19,7 @@ class GroupViewController: UIViewController {
     let db = Firestore.firestore()
     let userID = Auth.auth().currentUser!.uid
     var groupIDs = [String]()
+    var totalGroupAmount: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,7 @@ class GroupViewController: UIViewController {
             groupChange?.documentChanges.forEach({ (DocumentChange) in
                 if DocumentChange.type == .added{
                     let newGroup = DocumentChange.document.data()
+                    print(newGroup)
                     let objectGID = newGroup["gid"] as! String
                     let objectGName = newGroup["name"] as! String
                     self.groupList.append(Group(id: objectGID, name: objectGName)!)
@@ -42,8 +44,27 @@ class GroupViewController: UIViewController {
                 self.groupTableView.reloadData()
             }
         }
+        db.collection("groups").addSnapshotListener { (allGroups, error) in
+            let groupsThing = allGroups
+            groupsThing?.documentChanges.forEach({ (DocumentChange) in
+                if DocumentChange.type == .added{
+                    for group in self.groupList{
+                        self.db.collection("groups").document(group.gid).collection("Subs").addSnapshotListener { (exactGroupSnapshot, error) in
+                            exactGroupSnapshot?.documentChanges.forEach({ (groupSub) in
+                                let price = groupSub.document.data()
+                                let priceQuery = price["price"] as! Int
+                                self.totalGroupAmount += priceQuery
+                            })
+                            DispatchQueue.main.async {
+                                print(self.totalGroupAmount)
+                                
+                            }
+                        }
+                    }
+                }
+            })
+        }
     }
-
 }
 
 extension GroupViewController: UITableViewDataSource, UITableViewDelegate{
