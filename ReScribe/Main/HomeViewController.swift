@@ -71,7 +71,7 @@ class HomeViewController: UIViewController {
                                     //Self counting label from this repo: https://github.com/EFPrefix/EFCountingLabel
                                     self.totalAmountLabel.countFromZeroTo(CGFloat(totalSubAmount), withDuration: 1.5)
                                     self.totalAmountLabel.completionBlock = { () in
-                                        self.totalAmountLabel.text = String(totalSubAmount) + " dkk,-"
+                                        self.totalAmountLabel.text = String(totalSubAmount)
                                     
                                     }
                                 }
@@ -105,7 +105,7 @@ class HomeViewController: UIViewController {
                                     let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
                                         self.totalAmountLabel.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
                                         self.totalAmountLabel.completionBlock = { () in
-                                            self.totalAmountLabel.text = String(newSubAmount) + " dkk,-"
+                                            self.totalAmountLabel.text = String(newSubAmount)
                                     }
                                 }
                             }
@@ -115,7 +115,7 @@ class HomeViewController: UIViewController {
                         let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
                         self.totalAmountLabel.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
                         self.totalAmountLabel.completionBlock = { () in
-                            self.totalAmountLabel.text = String(newSubAmount) + " dkk,-"
+                            self.totalAmountLabel.text = String(newSubAmount)
                             
                         }
                     }
@@ -130,7 +130,7 @@ class HomeViewController: UIViewController {
                                 let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
                                 self.totalAmountLabel.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
                                 self.totalAmountLabel.completionBlock = { () in
-                                    self.totalAmountLabel.text = String(newSubAmount) + " dkk,-"
+                                    self.totalAmountLabel.text = String(newSubAmount)
                                     
                                 }
                             }

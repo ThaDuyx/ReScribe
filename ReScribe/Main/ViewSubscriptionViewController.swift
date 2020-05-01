@@ -12,6 +12,7 @@ import Firebase
 class ViewSubscriptionViewController: UIViewController {
     @IBOutlet weak var infotab: UIView!
     @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var backgroundView: UIView!
     
     //Buttons
     @IBOutlet weak var onOffBtn: UIButton!
@@ -104,6 +105,7 @@ class ViewSubscriptionViewController: UIViewController {
         super.viewDidLoad()
         self.infotab.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
         self.navigationController?.navigationBar.barTintColor = UIColor.init(netHex: 0x353535)
+        self.backgroundView.round(corners: .allCorners, cornerRadius: 10)
         
         
         selectedSubImage.image = selectedSub?.image

@@ -14,6 +14,7 @@ class GroupViewController: UIViewController {
     @IBOutlet weak var groupTableView: UITableView!
     @IBOutlet weak var groupAddButton: UIButton!
     @IBOutlet weak var infotabView: UIView!
+    @IBOutlet weak var backgroundView: UIView!
     var groupList = [Group]()
     let db = Firestore.firestore()
     let userID = Auth.auth().currentUser!.uid
@@ -24,6 +25,7 @@ class GroupViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         self.infotabView.round(corners: [.bottomLeft, .bottomRight], cornerRadius: 20)
         self.groupAddButton.round(corners: .allCorners, cornerRadius: 20)
+        self.backgroundView.round(corners: .allCorners, cornerRadius: 10)
         
 
         db.collection("users").document(userID).collection("Groups").addSnapshotListener { (gSnapshot, error) in

@@ -70,7 +70,7 @@ class IndvidualUpcomingViewController: UIViewController {
                                     //Self counting label from this repo: https://github.com/EFPrefix/EFCountingLabel
                                     self.individualAmount.countFromZeroTo(CGFloat(individualSubAmount), withDuration: 1.5)
                                     self.individualAmount.completionBlock = { () in
-                                        self.individualAmount.text = String(individualSubAmount) + " dkk,-"
+                                        self.individualAmount.text = String(individualSubAmount)
                                     }
                                 }
                             }
@@ -98,7 +98,7 @@ class IndvidualUpcomingViewController: UIViewController {
                         let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
                         self.individualAmount.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
                         self.individualAmount.completionBlock = { () in
-                            self.individualAmount.text = String(newSubAmount) + " dkk,-"
+                            self.individualAmount.text = String(newSubAmount)
                         }
                     }
                     
@@ -113,7 +113,7 @@ class IndvidualUpcomingViewController: UIViewController {
                                 let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
                                 self.individualAmount.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
                                 self.individualAmount.completionBlock = { () in
-                                    self.individualAmount.text = String(newSubAmount) + " dkk,-"
+                                    self.individualAmount.text = String(newSubAmount)
                                 }
                             }
                         }
