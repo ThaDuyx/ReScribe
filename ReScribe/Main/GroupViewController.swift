@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import EFCountingLabel
 
 class GroupViewController: UIViewController {
 
@@ -15,11 +16,13 @@ class GroupViewController: UIViewController {
     @IBOutlet weak var groupAddButton: UIButton!
     @IBOutlet weak var infotabView: UIView!
     @IBOutlet weak var backgroundView: UIView!
+    @IBOutlet weak var groupExpenseLabel: EFCountingLabel!
     var groupList = [Group]()
     let db = Firestore.firestore()
     let userID = Auth.auth().currentUser!.uid
     var groupIDs = [String]()
     var totalGroupAmount: Int = 0
+    var root = "groups"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,48 +31,63 @@ class GroupViewController: UIViewController {
         self.groupAddButton.round(corners: .allCorners, cornerRadius: 20)
         self.backgroundView.round(corners: .allCorners, cornerRadius: 10)
         
-
         db.collection("users").document(userID).collection("Groups").addSnapshotListener { (gSnapshot, error) in
             let groupChange = gSnapshot
             groupChange?.documentChanges.forEach({ (DocumentChange) in
                 if DocumentChange.type == .added{
                     let newGroup = DocumentChange.document.data()
-                    print(newGroup)
                     let objectGID = newGroup["gid"] as! String
                     let objectGName = newGroup["name"] as! String
                     self.groupList.append(Group(id: objectGID, name: objectGName)!)
+                    self.db.collection("groups").document(objectGID).collection("Subs").addSnapshotListener { (groupSubsSnap, error) in
+                        
+                        if let error = error{
+                            print("Error getting change: \(error)")
+                        } else {
+                            groupSubsSnap?.documentChanges.forEach({ (groupSubChange) in
+                                
+                                if groupSubChange.type == .added{
+                                    let price = groupSubChange.document.data()
+                                    let priceQuery = price["price"] as! Int
+                                    self.totalGroupAmount += priceQuery
+                                }
+                                    
+                                else if groupSubChange.type == .modified{
+                                    let priceChange = groupSubChange.document.data()
+                                    let priceQuery = priceChange["price"] as! Int
+                                    let modifiedStatus = priceChange["status"] as! Bool
+                                    if modifiedStatus == true{
+                                        self.totalGroupAmount += priceQuery
+                                    } else {
+                                        self.totalGroupAmount -= priceQuery
+                                    }
+                                }
+                                    
+                                else if groupSubChange.type == .removed{
+                                    let priceRemove = groupSubChange.document.data()
+                                    let priceRemoveQuery = priceRemove["price"] as! Int
+                                    self.totalGroupAmount -= priceRemoveQuery
+                                }
+                                
+                                else {
+                                    print("Something went wrong")
+                                }
+                            })
+                            DispatchQueue.main.async {
+                                self.groupExpenseLabel.countFrom(0, to: CGFloat(self.totalGroupAmount))
+                            }
+                        }
+                    }
                 }
             })
             DispatchQueue.main.async {
                 self.groupTableView.reloadData()
             }
         }
-        db.collection("groups").addSnapshotListener { (allGroups, error) in
-            let groupsThing = allGroups
-            groupsThing?.documentChanges.forEach({ (DocumentChange) in
-                if DocumentChange.type == .added{
-                    for group in self.groupList{
-                        self.db.collection("groups").document(group.gid).collection("Subs").addSnapshotListener { (exactGroupSnapshot, error) in
-                            exactGroupSnapshot?.documentChanges.forEach({ (groupSub) in
-                                let price = groupSub.document.data()
-                                let priceQuery = price["price"] as! Int
-                                self.totalGroupAmount += priceQuery
-                            })
-                            DispatchQueue.main.async {
-                                print(self.totalGroupAmount)
-                                
-                            }
-                        }
-                    }
-                }
-            })
-        }
     }
 }
 
 extension GroupViewController: UITableViewDataSource, UITableViewDelegate{
-    
-    
     func numberOfSections(in tableView: UITableView) -> Int {
          return groupList.count
      }
@@ -78,8 +96,8 @@ extension GroupViewController: UITableViewDataSource, UITableViewDelegate{
         if segue.identifier == "add"{
             let vc = segue.destination as! SelectedGroupViewController
             vc.selectedGroup = groupList[rowIndex]
+            vc.root = root
         }
-
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -105,11 +123,9 @@ extension GroupViewController: UITableViewDataSource, UITableViewDelegate{
         return cell
     }
 
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        rowIndex = indexPath.row
+        rowIndex = indexPath.section
         
         performSegue(withIdentifier: "add", sender: self)
     }
 }
-

@@ -32,6 +32,7 @@ class SubscriptionViewController: UIViewController {
     var price = 0
     var subPlans = [Plan]()
     var toBeStoredNextPaymentDate = ""
+    var groupID = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -134,7 +135,7 @@ class SubscriptionViewController: UIViewController {
                     }
                 }
             } else if root == "groups"{
-                let newGroupSubDocument = db.collection("groups").document("6lF6Sg3ncwuHcrWkcrDC").collection("Subs").document()
+                let newGroupSubDocument = db.collection("groups").document(groupID).collection("Subs").document()
                 newGroupSubDocument.setData(["subid":newGroupSubDocument.documentID, "company":headerName, "genre":genreString, "date":datePick.text!, "status":true, "plan":planName, "price":price, "nextdate":toBeStoredNextPaymentDate]) { (error) in
                     if error != nil {
                         print("Oh no")

@@ -13,19 +13,32 @@ class ViewSubscriptionViewController: UIViewController {
     @IBOutlet weak var infotab: UIView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var backgroundView: UIView!
-    
+    var root = ""
+    var groupID = ""
     //Buttons
     @IBOutlet weak var onOffBtn: UIButton!
     @IBAction func onOffBtnTapped(_ sender: Any) {
         let db = Firestore.firestore()
         let userID = Auth.auth().currentUser!.uid
         if selectedSub?.status == true{
-            db.collection("users").document(userID).collection("Subs").document(selectedSub!.id).setData(["status" : false], merge: true) { (error) in
-                if error != nil{
-                    print("Oops")
-                } else {
-                    self.navigationController?.popToRootViewController(animated: true)
+            if root == "personal"{
+                db.collection("users").document(userID).collection("Subs").document(selectedSub!.id).setData(["status" : false], merge: true) { (error) in
+                    if error != nil{
+                        print("Oops")
+                    } else {
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
                 }
+            } else if root == "groups"{
+                db.collection("groups").document(groupID).collection("Subs").document(selectedSub!.id).setData(["status" : false], merge: true) { (error) in
+                    if error != nil{
+                        print("Oops")
+                    } else {
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
+                }
+            } else {
+                print("Something went wrong")
             }
         } else {
             
@@ -49,11 +62,21 @@ class ViewSubscriptionViewController: UIViewController {
                 let nextPaymentDate = calender.date(byAdding: .day, value: 31, to: myDatePicker.date)
                 let updateNextDate = dateFormatter.string(from: nextPaymentDate!)
                 
-                db.collection("users").document(userID).collection("Subs").document(self.selectedSub!.id).setData(["status" : true, "date":newDate, "nextdate":updateNextDate], merge: true) { (error) in
-                    if error != nil {
-                        print("Oops")
-                    } else {
-                        self.navigationController?.popToRootViewController(animated: true)
+                if self.root == "personal"{
+                    db.collection("users").document(userID).collection("Subs").document(self.selectedSub!.id).setData(["status" : true, "date":newDate, "nextdate":updateNextDate], merge: true) { (error) in
+                        if error != nil {
+                            print("Oops")
+                        } else {
+                            self.navigationController?.popToRootViewController(animated: true)
+                        }
+                    }
+                } else if self.root == "groups"{
+                    db.collection("groups").document(self.groupID).collection("Subs").document(self.selectedSub!.id).setData(["status" : true, "date":newDate, "nextdate":updateNextDate], merge: true) { (error) in
+                        if error != nil {
+                            print("Oops")
+                        } else {
+                            self.navigationController?.popToRootViewController(animated: true)
+                        }
                     }
                 }
                 //Own code ends
@@ -65,7 +88,6 @@ class ViewSubscriptionViewController: UIViewController {
             //--------------------------------------------
             //Taken code ends
         }
-        
     }
     
     @IBAction func removeTapped(_ sender: Any) {
@@ -75,7 +97,11 @@ class ViewSubscriptionViewController: UIViewController {
         refreshAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
             let db = Firestore.firestore()
             let userID = Auth.auth().currentUser!.uid
-            db.collection("users").document(userID).collection("Subs").document(self.selectedSub!.id).delete()
+            if self.root == "personal" {
+                db.collection("users").document(userID).collection("Subs").document(self.selectedSub!.id).delete()
+            } else if self.root == "groups" {
+                db.collection("groups").document(self.groupID).collection("Subs").document(self.selectedSub!.id).delete()
+            }
             self.navigationController?.popToRootViewController(animated: true)
             print("Deleting")
         }))
@@ -85,10 +111,7 @@ class ViewSubscriptionViewController: UIViewController {
         }))
 
         present(refreshAlert, animated: true, completion: nil)
-        
-        
     }
-    
     
     //Labels
     @IBOutlet weak var selectedSubImage: UIImageView!

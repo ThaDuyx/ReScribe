@@ -10,8 +10,6 @@ import UIKit
 import Firebase
 import EFCountingLabel
 
-let subsNameArr = ["Viaplay", "Netflix"]
-
 class SelectedGroupViewController: UIViewController {
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var infoView: UIView!
@@ -31,6 +29,7 @@ class SelectedGroupViewController: UIViewController {
         self.infoView.round(corners: [.bottomRight, .bottomLeft], cornerRadius: 20)
         self.addButton.round(corners: .allCorners, cornerRadius: 20)
         self.navigationController?.navigationBar.barTintColor = UIColor.init(netHex: 0x353535)
+        print(selectedGroup!.gid)
         let storageRef = storage.reference()
         db.collection("groups").document(selectedGroup!.gid).collection("Subs").addSnapshotListener { (snapshot, error) in
             if let error = error {
@@ -50,8 +49,6 @@ class SelectedGroupViewController: UIViewController {
                         let subNextDate = newData["nextdate"] as! String
                         let starsRef = storageRef.child("Images/" + companyName  + ".jpg")
                         let remaining = self.calculateDatesRemaining(dateString: subNextDate)
-                        
-                        print(newData)
                         starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
                             if let error = error {
                               print("Error \(error)")
@@ -66,6 +63,48 @@ class SelectedGroupViewController: UIViewController {
                                     self.paymentTableView.reloadData()
                                     let totalGroupExpense = self.calculateTotalAmount(allSubs: self.groupSubscriptions)
                                     self.groupExpenses.countFrom(0, to: CGFloat(totalGroupExpense))
+                                }
+                            }
+                        }
+                    }
+                    
+                    if change.type == .modified{
+                        let updatedData = change.document.data()
+                        for sub in self.groupSubscriptions{
+                            if updatedData["subid"] as! String == sub.id{
+                                if sub.status == true {
+                                    sub.status = false
+                                    sub.remainingDays = 1000
+                                } else {
+                                    sub.status = true
+                                    sub.date = updatedData["date"] as! String
+                                    let updatedremaining = updatedData["nextdate"] as! String
+                                    sub.remainingDays = self.calculateDatesRemaining(dateString: updatedremaining)
+                                }
+                            }
+                        }
+                        
+                        //self.sortSubscriptions()
+                        self.paymentTableView.reloadData()
+                        let newSubAmount = self.calculateTotalAmount(allSubs: self.groupSubscriptions)
+                        self.groupExpenses.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
+                        self.groupExpenses.completionBlock = { () in
+                            self.groupExpenses.text = String(newSubAmount)
+                        }
+                    }
+                    
+                    if change.type == .removed{
+                        let removedData = change.document.data()
+                        let removedSubId = removedData["subid"] as! String
+                        for sub in self.groupSubscriptions{
+                            if removedSubId == sub.id{
+                                self.groupSubscriptions.removeAll { $0.id == removedSubId }
+                                //self.sortSubscriptions()
+                                self.paymentTableView.reloadData()
+                                let newSubAmount = self.calculateTotalAmount(allSubs: self.groupSubscriptions)
+                                self.groupExpenses.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
+                                self.groupExpenses.completionBlock = { () in
+                                    self.groupExpenses.text = String(newSubAmount)
                                 }
                             }
                         }
@@ -110,9 +149,12 @@ class SelectedGroupViewController: UIViewController {
         if segue.identifier != "viewGrpSub"{
             let vc = segue.destination as! SubscriptionAddViewController
             vc.root = root
+            vc.groupID = selectedGroup!.gid
         } else {
             let vc = segue.destination as! ViewSubscriptionViewController
             vc.selectedSub = groupSubscriptions[rowIndex]
+            vc.root = root
+            vc.groupID = selectedGroup!.gid
         }
     }
 }
@@ -144,9 +186,16 @@ extension SelectedGroupViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "groupPayment", for: indexPath) as! TableViewCell
-        cell.selectedGroupTimeLabel.text = String(groupSubscriptions[indexPath.section].remainingDays)
+        
+        if groupSubscriptions[indexPath.section].status != true{
+            cell.selectedGroupTimeLabel.text = "Deativated"
+            cell.selectedGroupCostLabel.text = " "
+        } else {
+            cell.selectedGroupTimeLabel.text = String(groupSubscriptions[indexPath.section].remainingDays)
+            cell.selectedGroupCostLabel.text = String(groupSubscriptions[indexPath.section].price)
+        }
         cell.selectedGroupImage.image = groupSubscriptions[indexPath.section].image
-        cell.selectedGroupCostLabel.text = String(groupSubscriptions[indexPath.section].price)
+
 
         cell.layer.cornerRadius = 8
         cell.clipsToBounds = true

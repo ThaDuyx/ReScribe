@@ -134,7 +134,6 @@ class IndvidualUpcomingViewController: UIViewController {
     }
     
     func calculateDatesRemaining(dateString: String) -> Int{
-        
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
@@ -156,7 +155,6 @@ class IndvidualUpcomingViewController: UIViewController {
             }
         }
     }
-    
 }
 
 extension IndvidualUpcomingViewController: UITableViewDataSource, UITableViewDelegate {
@@ -172,6 +170,7 @@ extension IndvidualUpcomingViewController: UITableViewDataSource, UITableViewDel
         if segue.identifier == "viewSubs"{
             let vc = segue.destination as! ViewSubscriptionViewController
             vc.selectedSub = individualSubs[rowIndex]
+            vc.root = root
         } else {
             let vc2 = segue.destination as! SubscriptionAddViewController
             vc2.root = root

@@ -12,8 +12,6 @@ import FirebaseStorage
 //Taken from this github repo: https://github.com/EFPrefix/EFCountingLabel
 import EFCountingLabel
 
-let nameArr = ["Viaplay", "Netflix", "HBO", "Youtube", "CBS", "Twitch", "Cmore", "D-play", "Spotify", "Apple Music", "World of Warcraft", "Apple TV", "Discord", "Strava", "Disney+", "Amazon Prime"]
-
 class HomeViewController: UIViewController {
    
     @IBOutlet weak var groupView: UIView!
@@ -28,6 +26,8 @@ class HomeViewController: UIViewController {
     let userID = Auth.auth().currentUser!.uid
     let db = Firestore.firestore()
     var individualSubs = [Subscription]()
+    var groupSubs = [Subscription]()
+    var totalExpense: Int = 0
 
     
     override func viewDidLoad() {
@@ -49,6 +49,7 @@ class HomeViewController: UIViewController {
                         let companyName = newData["company"] as! String
                         let subPlan = newData["plan"] as! String
                         let subPrice = newData["price"] as! Int
+                        self.totalExpense += subPrice
                         let subGenre = newData["genre"] as! String
                         let subStatus = newData["status"] as! Bool
                         let subID = newData["subid"] as! String
@@ -67,13 +68,10 @@ class HomeViewController: UIViewController {
                                 DispatchQueue.main.async {
                                     self.sortSubscriptions()
                                     self.inviTableView.reloadData()
-                                    let totalSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
+                                    //self.totalExpense = self.calculateTotalAmount(allSubs: self.individualSubs)
+
                                     //Self counting label from this repo: https://github.com/EFPrefix/EFCountingLabel
-                                    self.totalAmountLabel.countFromZeroTo(CGFloat(totalSubAmount), withDuration: 1.5)
-                                    self.totalAmountLabel.completionBlock = { () in
-                                        self.totalAmountLabel.text = String(totalSubAmount)
-                                    
-                                    }
+
                                 }
                             }
                         }
@@ -139,7 +137,57 @@ class HomeViewController: UIViewController {
                 })
             }
         }
+        db.collection("users").document(userID).collection("Groups").addSnapshotListener { (groupsSnapshot, error) in
+            if let error = error {
+                print("Error getting change: \(error)")
+            } else {
+                groupsSnapshot?.documentChanges.forEach({ (GroupChange) in
+                    let newGroup = GroupChange.document.data()
+                    let groupID = newGroup["gid"] as! String
+                    self.db.collection("groups").document(groupID).collection("Subs").addSnapshotListener { (groupSubSnapshot, error) in
+                        if let error = error{
+                            print("Error getting change: \(error)")
+                        } else {
+                            groupSubSnapshot?.documentChanges.forEach({ (groupSubChange) in
+                                if groupSubChange.type == .added{
+                                    let newSubChange = groupSubChange.document.data()
+                                    let companyName = newSubChange["company"] as! String
+                                    let subPlan = newSubChange["plan"] as! String
+                                    let subPrice = newSubChange["price"] as! Int
+                                    self.totalExpense += subPrice
+                                    let subGenre = newSubChange["genre"] as! String
+                                    let subStatus = newSubChange["status"] as! Bool
+                                    let subID = newSubChange["subid"] as! String
+                                    let subDate = newSubChange["date"] as! String
+                                    let subNextDate = newSubChange["nextdate"] as! String
+                                    let starsRef = storageRef.child("Images/" + companyName  + ".jpg")
+                                    let remaining = self.calculateDatesRemaining(dateString: subNextDate)
+                                    starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
+                                        if let error = error {
+                                          print("Error \(error)")
+                                        } else {
+                                            let logoImage = UIImage(data: data!)!
+                                            if subStatus == true {
+                                                self.groupSubs.append(Subscription(id:subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: remaining)!)
+                                            }
+                                            DispatchQueue.main.async {
+                                                self.sortSubscriptions()
+                                                self.groupTableView.reloadData()
+                                                //self.totalExpense += self.calculateTotalAmount(allSubs: self.groupSubs)
+                                                //Self counting label from this repo: https://github.com/EFPrefix/EFCountingLabel
+                                                self.totalAmountLabel.countFromZeroTo(CGFloat(self.totalExpense), withDuration: 1.5)
+                                            }
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        }
     }
+    
     
     func calculateTotalAmount(allSubs: [Subscription]) -> Int{
         var totalamount = 0
@@ -164,9 +212,17 @@ class HomeViewController: UIViewController {
         
         return daysRemaining!
     }
+
     
     func sortSubscriptions(){
         individualSubs.sort { (Subscription1, Subscription2) -> Bool in
+            if Subscription1.remainingDays != Subscription2.remainingDays{
+                return Subscription1.remainingDays < Subscription2.remainingDays
+            } else {
+                return Subscription1.name < Subscription2.name
+            }
+        }
+        groupSubs.sort { (Subscription1, Subscription2) -> Bool in
             if Subscription1.remainingDays != Subscription2.remainingDays{
                 return Subscription1.remainingDays < Subscription2.remainingDays
             } else {
@@ -180,7 +236,14 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
 
     func numberOfSections(in tableView: UITableView) -> Int {
-         return individualSubs.count
+        switch tableView {
+        case inviTableView:
+            return individualSubs.count
+        case groupTableView:
+            return groupSubs.count
+        default:
+            return 1
+        }
      }
 
     
@@ -199,12 +262,27 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let inviCell = inviTableView.dequeueReusableCell(withIdentifier: "inviCell", for: indexPath) as! TableViewCell
-        inviCell.homeIndvidualCostLabel.text = String(individualSubs[indexPath.section].price) + " dkk,-"
-        inviCell.homeIndvidualImage.image = individualSubs[indexPath.section].image
-        inviCell.homeIndvidualRemainingLabel.text = String(individualSubs[indexPath.section].remainingDays)
-        inviCell.layer.cornerRadius = 8
-        inviCell.clipsToBounds = true
-        return inviCell
+        let cell = UITableViewCell()
+        switch tableView {
+        case inviTableView:
+            let inviCell = inviTableView.dequeueReusableCell(withIdentifier: "inviCell", for: indexPath) as! TableViewCell
+            inviCell.homeIndvidualCostLabel.text = String(individualSubs[indexPath.section].price) + " dkk,-"
+            inviCell.homeIndvidualImage.image = individualSubs[indexPath.section].image
+            inviCell.homeIndvidualRemainingLabel.text = String(individualSubs[indexPath.section].remainingDays)
+            inviCell.layer.cornerRadius = 8
+            inviCell.clipsToBounds = true
+            return inviCell
+        case groupTableView:
+            let grpCell = groupTableView.dequeueReusableCell(withIdentifier: "grpCell", for: indexPath) as! TableViewCell
+            grpCell.homeGroupCostLabel.text = String(groupSubs[indexPath.section].price) + " dkk,-"
+            grpCell.homeGroupImage.image = groupSubs[indexPath.section].image
+            grpCell.homeGroupRemainingLabel.text = String(groupSubs[indexPath.section].remainingDays)
+            grpCell.layer.cornerRadius = 8
+            grpCell.clipsToBounds = true
+            return grpCell
+        default:
+            return cell
+        }
+
     }
 }
