@@ -38,6 +38,16 @@
                ReferencedContainer = "container:ReScribe.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "83618430246048050003992B"
+               BuildableName = "ReScribeUITests.xctest"
+               BlueprintName = "ReScribeUITests"
+               ReferencedContainer = "container:ReScribe.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

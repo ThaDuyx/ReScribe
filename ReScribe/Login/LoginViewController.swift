@@ -16,7 +16,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var insertEmail: UITextField!
     @IBOutlet weak var insertPass: UITextField!
     @IBOutlet weak var loginBtn: UIButton!
-    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var databaseLoad: UIActivityIndicatorView!
     @IBOutlet weak var viewLogin: UIView!
     var errorOcurred = false
@@ -29,10 +28,12 @@ class LoginViewController: UIViewController {
     @IBAction func loginTapped(_ sender: Any) {
         
         if (insertEmail.text?.isEmpty)! || (insertPass.text?.isEmpty)! {
-            errorLabel.alpha = 1
-            errorLabel.text = "email/password cant be empty"
+            let refreshAlert = UIAlertController(title: "Error", message: "Password or email cant be empty!", preferredStyle: UIAlertController.Style.alert)
+            refreshAlert.addAction(UIAlertAction(title: "Try again", style: .cancel, handler: { (action: UIAlertAction!) in
+                
+            }))
+            self.present(refreshAlert, animated: true, completion: nil)
         } else {
-            errorLabel.text = ""
             databaseLoad.alpha = 1
             databaseLoad.startAnimating()
             
@@ -41,8 +42,11 @@ class LoginViewController: UIViewController {
             
             Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
                 if error != nil {
-                    self.errorLabel.alpha = 1
-                    self.errorLabel.text = error!.localizedDescription
+                    let refreshAlert = UIAlertController(title: "Error", message: "Password or email is wrong!", preferredStyle: UIAlertController.Style.alert)
+                    refreshAlert.addAction(UIAlertAction(title: "Try again", style: .cancel, handler: { (action: UIAlertAction!) in
+                        
+                    }))
+                    self.present(refreshAlert, animated: true, completion: nil)
                     self.databaseLoad.stopAnimating()
                     self.databaseLoad.alpha = 0
                 } else {
