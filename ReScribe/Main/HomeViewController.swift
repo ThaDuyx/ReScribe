@@ -28,7 +28,6 @@ class HomeViewController: UIViewController {
     var individualSubs = [Subscription]()
     var groupSubs = [Subscription]()
     var totalExpense: Int = 0
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -168,7 +167,6 @@ class HomeViewController: UIViewController {
                                             DispatchQueue.main.async {
                                                 self.sortSubscriptions()
                                                 self.groupTableView.reloadData()
-                                                //self.totalExpense += self.calculateTotalAmount(allSubs: self.groupSubs)
                                                 //Self counting label from this repo: https://github.com/EFPrefix/EFCountingLabel
                                                 let totalAmount = self.calculateTotalAmount()
                                                 self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
