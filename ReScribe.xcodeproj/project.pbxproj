@@ -23,6 +23,7 @@
 		6AEBEA49241690D7008D14D5 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBEA48241690D7008D14D5 /* LoginViewController.swift */; };
 		8305F44A244DDD4200FEBE51 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8305F449244DDD4200FEBE51 /* TabBarController.swift */; };
 		835E20192445F1E300C04561 /* SubscrptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835E20182445F1E300C04561 /* SubscrptionViewController.swift */; };
+		83618434246048050003992B /* ReScribeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83618433246048050003992B /* ReScribeUITests.swift */; };
 		837A0D58241692AB0012A1F3 /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837A0D57241692AB0012A1F3 /* GroupViewController.swift */; };
 		837A0D612428D0CA0012A1F3 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837A0D602428D0CA0012A1F3 /* UIView+Extension.swift */; };
 		837A0D632428E3730012A1F3 /* SubscriptionAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837A0D622428E3730012A1F3 /* SubscriptionAddViewController.swift */; };
@@ -36,6 +37,13 @@
 
 /* Begin PBXContainerItemProxy section */
 		6ADEAEE6246040A200D1850C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AEBEA22241672D6008D14D5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6AEBEA29241672D6008D14D5;
+			remoteInfo = ReScribe;
+		};
+		83618436246048050003992B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6AEBEA22241672D6008D14D5 /* Project object */;
 			proxyType = 1;
@@ -68,6 +76,9 @@
 		6CA6DB4A251C35578B4A7C9E /* Pods-ReScribe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReScribe.release.xcconfig"; path = "Target Support Files/Pods-ReScribe/Pods-ReScribe.release.xcconfig"; sourceTree = "<group>"; };
 		8305F449244DDD4200FEBE51 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		835E20182445F1E300C04561 /* SubscrptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscrptionViewController.swift; sourceTree = "<group>"; };
+		83618431246048050003992B /* ReScribeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReScribeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		83618433246048050003992B /* ReScribeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReScribeUITests.swift; sourceTree = "<group>"; };
+		83618435246048050003992B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		837A0D57241692AB0012A1F3 /* GroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
 		837A0D602428D0CA0012A1F3 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		837A0D622428E3730012A1F3 /* SubscriptionAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionAddViewController.swift; sourceTree = "<group>"; };
@@ -91,6 +102,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				89CE335F3C40AC7E7D97E203 /* Pods_ReScribe.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8361842E246048050003992B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,6 +146,7 @@
 			children = (
 				6AEBEA2C241672D6008D14D5 /* ReScribe */,
 				6ADEAEE2246040A200D1850C /* ReScribeTests */,
+				83618432246048050003992B /* ReScribeUITests */,
 				6AEBEA2B241672D6008D14D5 /* Products */,
 				02AF78EA745C25A0ACC71758 /* Pods */,
 				52B1281DABEA2977F9F48C1D /* Frameworks */,
@@ -139,6 +158,7 @@
 			children = (
 				6AEBEA2A241672D6008D14D5 /* ReScribe.app */,
 				6ADEAEE1246040A200D1850C /* ReScribeTests.xctest */,
+				83618431246048050003992B /* ReScribeUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -190,6 +210,15 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
+		83618432246048050003992B /* ReScribeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				83618433246048050003992B /* ReScribeUITests.swift */,
+				83618435246048050003992B /* Info.plist */,
+			);
+			path = ReScribeUITests;
+			sourceTree = "<group>";
+		};
 		837A0D5E241696340012A1F3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,6 +267,24 @@
 			productReference = 6AEBEA2A241672D6008D14D5 /* ReScribe.app */;
 			productType = "com.apple.product-type.application";
 		};
+		83618430246048050003992B /* ReScribeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8361843A246048050003992B /* Build configuration list for PBXNativeTarget "ReScribeUITests" */;
+			buildPhases = (
+				8361842D246048050003992B /* Sources */,
+				8361842E246048050003992B /* Frameworks */,
+				8361842F246048050003992B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				83618437246048050003992B /* PBXTargetDependency */,
+			);
+			name = ReScribeUITests;
+			productName = ReScribeUITests;
+			productReference = 83618431246048050003992B /* ReScribeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -254,6 +301,10 @@
 					};
 					6AEBEA29241672D6008D14D5 = {
 						CreatedOnToolsVersion = 11.3.1;
+					};
+					83618430246048050003992B = {
+						CreatedOnToolsVersion = 11.4.1;
+						TestTargetID = 6AEBEA29241672D6008D14D5;
 					};
 				};
 			};
@@ -272,6 +323,7 @@
 			targets = (
 				6AEBEA29241672D6008D14D5 /* ReScribe */,
 				6ADEAEE0246040A200D1850C /* ReScribeTests */,
+				83618430246048050003992B /* ReScribeUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -293,6 +345,13 @@
 				6AEBEA442416737B008D14D5 /* GoogleService-Info.plist in Resources */,
 				6AEBEA39241672D9008D14D5 /* Assets.xcassets in Resources */,
 				6AEBEA37241672D6008D14D5 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8361842F246048050003992B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,6 +433,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8361842D246048050003992B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83618434246048050003992B /* ReScribeUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -381,6 +448,11 @@
 			isa = PBXTargetDependency;
 			target = 6AEBEA29241672D6008D14D5 /* ReScribe */;
 			targetProxy = 6ADEAEE6246040A200D1850C /* PBXContainerItemProxy */;
+		};
+		83618437246048050003992B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6AEBEA29241672D6008D14D5 /* ReScribe */;
+			targetProxy = 83618436246048050003992B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -598,6 +670,46 @@
 			};
 			name = Release;
 		};
+		83618438246048050003992B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G6TSQJ6DQ5;
+				INFOPLIST_FILE = ReScribeUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = s185117.ReScribeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ReScribe;
+			};
+			name = Debug;
+		};
+		83618439246048050003992B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G6TSQJ6DQ5;
+				INFOPLIST_FILE = ReScribeUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = s185117.ReScribeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ReScribe;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -624,6 +736,15 @@
 			buildConfigurations = (
 				6AEBEA41241672D9008D14D5 /* Debug */,
 				6AEBEA42241672D9008D14D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8361843A246048050003992B /* Build configuration list for PBXNativeTarget "ReScribeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83618438246048050003992B /* Debug */,
+				83618439246048050003992B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
