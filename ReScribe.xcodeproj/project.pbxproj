@@ -11,6 +11,7 @@
 		6A0377FF2459C35B00D322E1 /* Groups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0377FE2459C35B00D322E1 /* Groups.swift */; };
 		6A23119B2449FEF3000E1B09 /* Subscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF184BD2446314900F97692 /* Subscriptions.swift */; };
 		6ACC3085244E14AE00802849 /* Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC3084244E14AE00802849 /* Plans.swift */; };
+		6ADEAEE4246040A200D1850C /* ReScribeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEAEE3246040A200D1850C /* ReScribeTests.swift */; };
 		6AEBEA2E241672D6008D14D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBEA2D241672D6008D14D5 /* AppDelegate.swift */; };
 		6AEBEA30241672D6008D14D5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBEA2F241672D6008D14D5 /* SceneDelegate.swift */; };
 		6AEBEA32241672D6008D14D5 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBEA31241672D6008D14D5 /* HomeViewController.swift */; };
@@ -33,12 +34,25 @@
 		89CE335F3C40AC7E7D97E203 /* Pods_ReScribe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556AD07E50692B4303D34380 /* Pods_ReScribe.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		6ADEAEE6246040A200D1850C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AEBEA22241672D6008D14D5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6AEBEA29241672D6008D14D5;
+			remoteInfo = ReScribe;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		52674C8F659AFB9F6CAEB847 /* Pods-ReScribe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReScribe.debug.xcconfig"; path = "Target Support Files/Pods-ReScribe/Pods-ReScribe.debug.xcconfig"; sourceTree = "<group>"; };
 		556AD07E50692B4303D34380 /* Pods_ReScribe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReScribe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A0377FC245994AC00D322E1 /* Users.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		6A0377FE2459C35B00D322E1 /* Groups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Groups.swift; sourceTree = "<group>"; };
 		6ACC3084244E14AE00802849 /* Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plans.swift; sourceTree = "<group>"; };
+		6ADEAEE1246040A200D1850C /* ReScribeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReScribeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6ADEAEE3246040A200D1850C /* ReScribeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReScribeTests.swift; sourceTree = "<group>"; };
+		6ADEAEE5246040A200D1850C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6AEBEA2A241672D6008D14D5 /* ReScribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReScribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AEBEA2D241672D6008D14D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6AEBEA2F241672D6008D14D5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +79,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6ADEAEDE246040A200D1850C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6AEBEA27241672D6008D14D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -93,10 +114,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6ADEAEE2246040A200D1850C /* ReScribeTests */ = {
+			isa = PBXGroup;
+			children = (
+				6ADEAEE3246040A200D1850C /* ReScribeTests.swift */,
+				6ADEAEE5246040A200D1850C /* Info.plist */,
+			);
+			path = ReScribeTests;
+			sourceTree = "<group>";
+		};
 		6AEBEA21241672D6008D14D5 = {
 			isa = PBXGroup;
 			children = (
 				6AEBEA2C241672D6008D14D5 /* ReScribe */,
+				6ADEAEE2246040A200D1850C /* ReScribeTests */,
 				6AEBEA2B241672D6008D14D5 /* Products */,
 				02AF78EA745C25A0ACC71758 /* Pods */,
 				52B1281DABEA2977F9F48C1D /* Frameworks */,
@@ -107,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				6AEBEA2A241672D6008D14D5 /* ReScribe.app */,
+				6ADEAEE1246040A200D1850C /* ReScribeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -169,6 +201,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6ADEAEE0246040A200D1850C /* ReScribeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6ADEAEE8246040A200D1850C /* Build configuration list for PBXNativeTarget "ReScribeTests" */;
+			buildPhases = (
+				6ADEAEDD246040A200D1850C /* Sources */,
+				6ADEAEDE246040A200D1850C /* Frameworks */,
+				6ADEAEDF246040A200D1850C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6ADEAEE7246040A200D1850C /* PBXTargetDependency */,
+			);
+			name = ReScribeTests;
+			productName = ReScribeTests;
+			productReference = 6ADEAEE1246040A200D1850C /* ReScribeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		6AEBEA29241672D6008D14D5 /* ReScribe */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6AEBEA40241672D9008D14D5 /* Build configuration list for PBXNativeTarget "ReScribe" */;
@@ -194,10 +244,14 @@
 		6AEBEA22241672D6008D14D5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1130;
+				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "Simon Andersen";
 				TargetAttributes = {
+					6ADEAEE0246040A200D1850C = {
+						CreatedOnToolsVersion = 11.4.1;
+						TestTargetID = 6AEBEA29241672D6008D14D5;
+					};
 					6AEBEA29241672D6008D14D5 = {
 						CreatedOnToolsVersion = 11.3.1;
 					};
@@ -217,11 +271,19 @@
 			projectRoot = "";
 			targets = (
 				6AEBEA29241672D6008D14D5 /* ReScribe */,
+				6ADEAEE0246040A200D1850C /* ReScribeTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6ADEAEDF246040A200D1850C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6AEBEA28241672D6008D14D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -279,6 +341,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6ADEAEDD246040A200D1850C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6ADEAEE4246040A200D1850C /* ReScribeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6AEBEA26241672D6008D14D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -306,6 +376,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		6ADEAEE7246040A200D1850C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6AEBEA29241672D6008D14D5 /* ReScribe */;
+			targetProxy = 6ADEAEE6246040A200D1850C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		6AEBEA35241672D6008D14D5 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -326,6 +404,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6ADEAEE9246040A200D1850C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G6TSQJ6DQ5;
+				INFOPLIST_FILE = ReScribeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dtu.diplom.s185083.ReScribeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReScribe.app/ReScribe";
+			};
+			name = Debug;
+		};
+		6ADEAEEA246040A200D1850C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G6TSQJ6DQ5;
+				INFOPLIST_FILE = ReScribeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dtu.diplom.s185083.ReScribeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReScribe.app/ReScribe";
+			};
+			name = Release;
+		};
 		6AEBEA3E241672D9008D14D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -481,6 +601,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6ADEAEE8246040A200D1850C /* Build configuration list for PBXNativeTarget "ReScribeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6ADEAEE9246040A200D1850C /* Debug */,
+				6ADEAEEA246040A200D1850C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6AEBEA25241672D6008D14D5 /* Build configuration list for PBXProject "ReScribe" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
