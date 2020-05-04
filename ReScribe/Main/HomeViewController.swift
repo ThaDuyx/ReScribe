@@ -38,12 +38,14 @@ class HomeViewController: UIViewController {
         self.totalAmountLabel.counter.timingFunction = EFTimingFunction.easeOut(easingRate: 3)
         
         let storageRef = storage.reference()
+        //Personal sub query - Subs are stored in the user data and adds a snapshot listener that listens for every change made within the users subs
         db.collection("users").document(userID).collection("Subs").addSnapshotListener { (snapshot, error) in
             if let error = error {
                 print("Error getting change: \(error)")
             } else {
                 let newDocument = snapshot
                 newDocument?.documentChanges.forEach({ change in
+                    //When personal subs are added
                     if change.type == .added {
                         let newData = change.document.data()
                         let companyName = newData["company"] as! String
@@ -68,15 +70,13 @@ class HomeViewController: UIViewController {
                                 DispatchQueue.main.async {
                                     self.sortSubscriptions()
                                     self.inviTableView.reloadData()
-                                    //self.totalExpense = self.calculateTotalAmount(allSubs: self.individualSubs)
-
-                                    //Self counting label from this repo: https://github.com/EFPrefix/EFCountingLabel
-
+                                    let totalAmount = self.calculateTotalAmount()
+                                    self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
                                 }
                             }
                         }
                     }
-                    
+                    //When personal subs are activated/deactivated
                     if change.type == .modified{
                         let updatedData = change.document.data()
                         let subID = updatedData["subid"] as! String
@@ -84,8 +84,8 @@ class HomeViewController: UIViewController {
                             for sub in self.individualSubs{
                                 if subID == sub.id{
                                     if sub.status == true {
-                                    sub.status = false
-                                    self.individualSubs.removeAll { $0.id == subID }
+                                        sub.status = false
+                                        self.individualSubs.removeAll { $0.id == subID }
                                     }
                                 }
                             }
@@ -100,23 +100,18 @@ class HomeViewController: UIViewController {
                                 DispatchQueue.main.async {
                                     self.sortSubscriptions()
                                     self.inviTableView.reloadData()
-                                    let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
-                                        self.totalAmountLabel.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
-                                        self.totalAmountLabel.completionBlock = { () in
-                                            self.totalAmountLabel.text = String(newSubAmount)
-                                    }
+                                    let totalAmount = self.calculateTotalAmount()
+                                    self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
+
                                 }
                             }
                         }
          
                         self.inviTableView.reloadData()
-                        let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
-                        self.totalAmountLabel.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
-                        self.totalAmountLabel.completionBlock = { () in
-                            self.totalAmountLabel.text = String(newSubAmount)
-                            
-                        }
+                        let totalAmount = self.calculateTotalAmount()
+                        self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
                     }
+                    //When personal subs are removed
                     if change.type == .removed{
                         let removedData = change.document.data()
                         let removedSubId = removedData["subid"] as! String
@@ -125,18 +120,17 @@ class HomeViewController: UIViewController {
                                 self.individualSubs.removeAll { $0.id == removedSubId }
                                 self.sortSubscriptions()
                                 self.inviTableView.reloadData()
-                                let newSubAmount = self.calculateTotalAmount(allSubs: self.individualSubs)
-                                self.totalAmountLabel.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
-                                self.totalAmountLabel.completionBlock = { () in
-                                    self.totalAmountLabel.text = String(newSubAmount)
-                                    
-                                }
+                                let totalAmount = self.calculateTotalAmount()
+                                self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
                             }
                         }
                     }
                 })
             }
         }
+        
+        //Group query - queries groups saved in user table and finds the respective groups in the groups table
+        //And for every group creates a SnapshotListener that listens for any changes made within the subs in the selected groups
         db.collection("users").document(userID).collection("Groups").addSnapshotListener { (groupsSnapshot, error) in
             if let error = error {
                 print("Error getting change: \(error)")
@@ -149,6 +143,7 @@ class HomeViewController: UIViewController {
                             print("Error getting change: \(error)")
                         } else {
                             groupSubSnapshot?.documentChanges.forEach({ (groupSubChange) in
+                                //When subs in groups are added
                                 if groupSubChange.type == .added{
                                     let newSubChange = groupSubChange.document.data()
                                     let companyName = newSubChange["company"] as! String
@@ -175,8 +170,57 @@ class HomeViewController: UIViewController {
                                                 self.groupTableView.reloadData()
                                                 //self.totalExpense += self.calculateTotalAmount(allSubs: self.groupSubs)
                                                 //Self counting label from this repo: https://github.com/EFPrefix/EFCountingLabel
-                                                self.totalAmountLabel.countFromZeroTo(CGFloat(self.totalExpense), withDuration: 1.5)
+                                                let totalAmount = self.calculateTotalAmount()
+                                                self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
                                             }
+                                        }
+                                    }
+                                }
+                                //When subs in groups are activated/deactivated
+                                if groupSubChange.type == .modified{
+                                    let updatedData = groupSubChange.document.data()
+                                    let subID = updatedData["subid"] as! String
+                                    if updatedData["status"] as! Bool != true{
+                                                for sub in self.groupSubs{
+                                                    if subID == sub.id{
+                                                        if sub.status == true {
+                                                            sub.status = false
+                                                            self.groupSubs.removeAll { $0.id == subID }
+                                                        }
+                                                    }
+                                                }
+                                        
+                                               } else {
+                                                let imageRef = updatedData["company"] as! String
+                                                let dateRef = updatedData["nextdate"] as! String
+                                                let remaining = self.calculateDatesRemaining(dateString: dateRef)
+                                                let starsRef = storageRef.child("Images/" + imageRef  + ".jpg")
+                                                starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
+                                                    let logoImage = UIImage(data: data!)!
+                                                    self.groupSubs.append(Subscription(id: updatedData["subid"] as! String , name: updatedData["company"] as! String, image: logoImage, plan: updatedData["plan"] as! String, price: updatedData["price"] as! Int, genre: updatedData["genre"] as! String, status: updatedData["status"] as! Bool, date: updatedData["date"] as! String, nextdate: updatedData["nextdate"] as! String, remainingDays: remaining)!)
+                                                    DispatchQueue.main.async {
+                                                        self.sortSubscriptions()
+                                                        self.groupTableView.reloadData()
+                                                        let totalAmount = self.calculateTotalAmount()
+                                                        self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
+                                                    }
+                                                }
+                                    }
+                                    self.groupTableView.reloadData()
+                                    let totalAmount = self.calculateTotalAmount()
+                                    self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
+                                }
+                                //When subs in groups are removed
+                                if groupSubChange.type == .removed{
+                                    let removedData = groupSubChange.document.data()
+                                    let removedSubId = removedData["subid"] as! String
+                                    for sub in self.groupSubs{
+                                        if removedSubId == sub.id{
+                                            self.groupSubs.removeAll { $0.id == removedSubId }
+                                            self.sortSubscriptions()
+                                            self.groupTableView.reloadData()
+                                            let totalAmount = self.calculateTotalAmount()
+                                            self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
                                         }
                                     }
                                 }
@@ -189,9 +233,14 @@ class HomeViewController: UIViewController {
     }
     
     
-    func calculateTotalAmount(allSubs: [Subscription]) -> Int{
+    func calculateTotalAmount() -> Int{
         var totalamount = 0
-        for sub in allSubs{
+        for sub in individualSubs{
+            if sub.status == true{
+                totalamount = sub.price + totalamount
+            }
+        }
+        for sub in groupSubs{
             if sub.status == true{
                 totalamount = sub.price + totalamount
             }

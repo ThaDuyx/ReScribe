@@ -88,9 +88,7 @@ class SelectedGroupViewController: UIViewController {
                         self.paymentTableView.reloadData()
                         let newSubAmount = self.calculateTotalAmount(allSubs: self.groupSubscriptions)
                         self.groupExpenses.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
-                        self.groupExpenses.completionBlock = { () in
-                            self.groupExpenses.text = String(newSubAmount)
-                        }
+
                     }
                     
                     if change.type == .removed{
@@ -99,13 +97,11 @@ class SelectedGroupViewController: UIViewController {
                         for sub in self.groupSubscriptions{
                             if removedSubId == sub.id{
                                 self.groupSubscriptions.removeAll { $0.id == removedSubId }
-                                //self.sortSubscriptions()
+                                self.sortSubscriptions()
                                 self.paymentTableView.reloadData()
                                 let newSubAmount = self.calculateTotalAmount(allSubs: self.groupSubscriptions)
                                 self.groupExpenses.countFromCurrentValueTo(CGFloat(newSubAmount), withDuration: 1.5)
-                                self.groupExpenses.completionBlock = { () in
-                                    self.groupExpenses.text = String(newSubAmount)
-                                }
+
                             }
                         }
                     }
@@ -125,6 +121,16 @@ class SelectedGroupViewController: UIViewController {
         let daysRemaining = calender.dateComponents([.day], from: currentDate, to: date!).day
         
         return daysRemaining!
+    }
+    
+    func sortSubscriptions(){
+        groupSubscriptions.sort { (Subscription1, Subscription2) -> Bool in
+            if Subscription1.remainingDays != Subscription2.remainingDays{
+                return Subscription1.remainingDays < Subscription2.remainingDays
+            } else {
+                return Subscription1.name < Subscription2.name
+            }
+        }
     }
     
     func calculateTotalAmount(allSubs: [Subscription]) -> Int{
