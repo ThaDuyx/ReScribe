@@ -15,6 +15,7 @@ class SelectedGroupViewController: UIViewController {
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var paymentTableView: UITableView!
     @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var deleteGroupButton: UIButton!
     @IBOutlet weak var groupExpenses: EFCountingLabel!
     let db = Firestore.firestore()
     let userID = Auth.auth().currentUser!.uid
@@ -28,6 +29,7 @@ class SelectedGroupViewController: UIViewController {
         self.contentView.round(corners: .allCorners, cornerRadius: 20)
         self.infoView.round(corners: [.bottomRight, .bottomLeft], cornerRadius: 20)
         self.addButton.round(corners: .allCorners, cornerRadius: 20)
+        self.deleteGroupButton.round(corners: .allCorners, cornerRadius: 20)
         self.navigationController?.navigationBar.barTintColor = UIColor.init(netHex: 0x353535)
         print(selectedGroup!.gid)
         let storageRef = storage.reference()
@@ -55,9 +57,9 @@ class SelectedGroupViewController: UIViewController {
                             } else {
                                 let logoImage = UIImage(data: data!)!
                                 if subStatus == true{
-                                    self.groupSubscriptions.append(Subscription(id: subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: remaining)!)
+                                    self.groupSubscriptions.append(Subscription(id: subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: remaining, gid: nil)!)
                                 } else {
-                                    self.groupSubscriptions.append(Subscription(id: subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: 1000)!)
+                                    self.groupSubscriptions.append(Subscription(id: subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: 1000, gid: nil)!)
                                 }
                                 DispatchQueue.main.async {
                                     self.paymentTableView.reloadData()
@@ -162,6 +164,29 @@ class SelectedGroupViewController: UIViewController {
             vc.root = root
             vc.groupID = selectedGroup!.gid
         }
+    }
+    @IBAction func deleteGroupTapped(_ sender: Any) {
+        
+        let refreshAlert = UIAlertController(title: "Remove", message: "Are you sure you want to delete this group?", preferredStyle: UIAlertController.Style.alert)
+
+        refreshAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
+            let userID = Auth.auth().currentUser!.uid
+            self.db.collection("users").document(userID).collection("Groups").document(self.selectedGroup!.gid).delete()
+            for groupSub in self.groupSubscriptions{
+                self.db.collection("groups").document(self.selectedGroup!.gid).collection("Subs").document(groupSub.id).delete()
+            }
+            self.db.collection("groups").document(self.selectedGroup!.gid).delete()
+            
+            self.navigationController?.popToRootViewController(animated: true)
+        }))
+
+        refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+          print("Handle Cancel Logic here")
+        }))
+
+        present(refreshAlert, animated: true, completion: nil)
+        
+        
     }
 }
 

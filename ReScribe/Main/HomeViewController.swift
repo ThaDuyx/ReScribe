@@ -64,7 +64,7 @@ class HomeViewController: UIViewController {
                             } else {
                                 let logoImage = UIImage(data: data!)!
                                 if subStatus == true {
-                                    self.individualSubs.append(Subscription(id:subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: remaining)!)
+                                    self.individualSubs.append(Subscription(id:subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: remaining, gid: nil)!)
                                 }
                                 DispatchQueue.main.async {
                                     self.sortSubscriptions()
@@ -95,7 +95,7 @@ class HomeViewController: UIViewController {
                             let starsRef = storageRef.child("Images/" + imageRef  + ".jpg")
                             starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
                                 let logoImage = UIImage(data: data!)!
-                                self.individualSubs.append(Subscription(id: updatedData["subid"] as! String , name: updatedData["company"] as! String, image: logoImage, plan: updatedData["plan"] as! String, price: updatedData["price"] as! Int, genre: updatedData["genre"] as! String, status: updatedData["status"] as! Bool, date: updatedData["date"] as! String, nextdate: updatedData["nextdate"] as! String, remainingDays: remaining)!)
+                                self.individualSubs.append(Subscription(id: updatedData["subid"] as! String , name: updatedData["company"] as! String, image: logoImage, plan: updatedData["plan"] as! String, price: updatedData["price"] as! Int, genre: updatedData["genre"] as! String, status: updatedData["status"] as! Bool, date: updatedData["date"] as! String, nextdate: updatedData["nextdate"] as! String, remainingDays: remaining, gid: nil)!)
                                 DispatchQueue.main.async {
                                     self.sortSubscriptions()
                                     self.inviTableView.reloadData()
@@ -135,94 +135,110 @@ class HomeViewController: UIViewController {
                 print("Error getting change: \(error)")
             } else {
                 groupsSnapshot?.documentChanges.forEach({ (GroupChange) in
-                    let newGroup = GroupChange.document.data()
-                    let groupID = newGroup["gid"] as! String
-                    self.db.collection("groups").document(groupID).collection("Subs").addSnapshotListener { (groupSubSnapshot, error) in
-                        if let error = error{
-                            print("Error getting change: \(error)")
-                        } else {
-                            groupSubSnapshot?.documentChanges.forEach({ (groupSubChange) in
-                                //When subs in groups are added
-                                if groupSubChange.type == .added{
-                                    let newSubChange = groupSubChange.document.data()
-                                    let companyName = newSubChange["company"] as! String
-                                    let subPlan = newSubChange["plan"] as! String
-                                    let subPrice = newSubChange["price"] as! Int
-                                    self.totalExpense += subPrice
-                                    let subGenre = newSubChange["genre"] as! String
-                                    let subStatus = newSubChange["status"] as! Bool
-                                    let subID = newSubChange["subid"] as! String
-                                    let subDate = newSubChange["date"] as! String
-                                    let subNextDate = newSubChange["nextdate"] as! String
-                                    let starsRef = storageRef.child("Images/" + companyName  + ".jpg")
-                                    let remaining = self.calculateDatesRemaining(dateString: subNextDate)
-                                    starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
-                                        if let error = error {
-                                          print("Error \(error)")
-                                        } else {
-                                            let logoImage = UIImage(data: data!)!
-                                            if subStatus == true {
-                                                self.groupSubs.append(Subscription(id:subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: remaining)!)
+                    if GroupChange.type == .added{
+                        
+                        let newGroup = GroupChange.document.data()
+                        let groupID = newGroup["gid"] as! String
+                        self.db.collection("groups").document(groupID).collection("Subs").addSnapshotListener { (groupSubSnapshot, error) in
+                            if let error = error{
+                                print("Error getting change: \(error)")
+                            } else {
+                                groupSubSnapshot?.documentChanges.forEach({ (groupSubChange) in
+                                    //When subs in groups are added
+                                    if groupSubChange.type == .added{
+                                        let newSubChange = groupSubChange.document.data()
+                                        let companyName = newSubChange["company"] as! String
+                                        let subPlan = newSubChange["plan"] as! String
+                                        let subPrice = newSubChange["price"] as! Int
+                                        self.totalExpense += subPrice
+                                        let subGenre = newSubChange["genre"] as! String
+                                        let subStatus = newSubChange["status"] as! Bool
+                                        let subID = newSubChange["subid"] as! String
+                                        let subDate = newSubChange["date"] as! String
+                                        let subNextDate = newSubChange["nextdate"] as! String
+                                        let starsRef = storageRef.child("Images/" + companyName  + ".jpg")
+                                        let remaining = self.calculateDatesRemaining(dateString: subNextDate)
+                                        starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
+                                            if let error = error {
+                                              print("Error \(error)")
+                                            } else {
+                                                let logoImage = UIImage(data: data!)!
+                                                if subStatus == true {
+                                                    self.groupSubs.append(Subscription(id:subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: remaining, gid: groupID)!)
+                                                }
+                                                DispatchQueue.main.async {
+                                                    self.sortSubscriptions()
+                                                    self.groupTableView.reloadData()
+                                                    //Self counting label from this repo: https://github.com/EFPrefix/EFCountingLabel
+                                                    let totalAmount = self.calculateTotalAmount()
+                                                    self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
+                                                }
                                             }
-                                            DispatchQueue.main.async {
+                                        }
+                                    }
+                                    //When subs in groups are activated/deactivated
+                                    if groupSubChange.type == .modified{
+                                        let updatedData = groupSubChange.document.data()
+                                        let subID = updatedData["subid"] as! String
+                                        if updatedData["status"] as! Bool != true{
+                                                    for sub in self.groupSubs{
+                                                        if subID == sub.id{
+                                                            if sub.status == true {
+                                                                sub.status = false
+                                                                self.groupSubs.removeAll { $0.id == subID }
+                                                            }
+                                                        }
+                                                    }
+                                            
+                                                   } else {
+                                                    let imageRef = updatedData["company"] as! String
+                                                    let dateRef = updatedData["nextdate"] as! String
+                                                    let remaining = self.calculateDatesRemaining(dateString: dateRef)
+                                                    let starsRef = storageRef.child("Images/" + imageRef  + ".jpg")
+                                                    starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
+                                                        let logoImage = UIImage(data: data!)!
+                                                        self.groupSubs.append(Subscription(id: updatedData["subid"] as! String , name: updatedData["company"] as! String, image: logoImage, plan: updatedData["plan"] as! String, price: updatedData["price"] as! Int, genre: updatedData["genre"] as! String, status: updatedData["status"] as! Bool, date: updatedData["date"] as! String, nextdate: updatedData["nextdate"] as! String, remainingDays: remaining, gid: groupID)!)
+                                                        DispatchQueue.main.async {
+                                                            self.sortSubscriptions()
+                                                            self.groupTableView.reloadData()
+                                                            let totalAmount = self.calculateTotalAmount()
+                                                            self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
+                                                        }
+                                                    }
+                                        }
+                                        self.groupTableView.reloadData()
+                                        let totalAmount = self.calculateTotalAmount()
+                                        self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
+                                    }
+                                    //When subs in groups are removed
+                                    if groupSubChange.type == .removed{
+                                        let removedData = groupSubChange.document.data()
+                                        let removedSubId = removedData["subid"] as! String
+                                        for sub in self.groupSubs{
+                                            if removedSubId == sub.id{
+                                                self.groupSubs.removeAll { $0.id == removedSubId }
                                                 self.sortSubscriptions()
                                                 self.groupTableView.reloadData()
-                                                //Self counting label from this repo: https://github.com/EFPrefix/EFCountingLabel
                                                 let totalAmount = self.calculateTotalAmount()
                                                 self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
                                             }
                                         }
                                     }
-                                }
-                                //When subs in groups are activated/deactivated
-                                if groupSubChange.type == .modified{
-                                    let updatedData = groupSubChange.document.data()
-                                    let subID = updatedData["subid"] as! String
-                                    if updatedData["status"] as! Bool != true{
-                                                for sub in self.groupSubs{
-                                                    if subID == sub.id{
-                                                        if sub.status == true {
-                                                            sub.status = false
-                                                            self.groupSubs.removeAll { $0.id == subID }
-                                                        }
-                                                    }
-                                                }
-                                        
-                                               } else {
-                                                let imageRef = updatedData["company"] as! String
-                                                let dateRef = updatedData["nextdate"] as! String
-                                                let remaining = self.calculateDatesRemaining(dateString: dateRef)
-                                                let starsRef = storageRef.child("Images/" + imageRef  + ".jpg")
-                                                starsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
-                                                    let logoImage = UIImage(data: data!)!
-                                                    self.groupSubs.append(Subscription(id: updatedData["subid"] as! String , name: updatedData["company"] as! String, image: logoImage, plan: updatedData["plan"] as! String, price: updatedData["price"] as! Int, genre: updatedData["genre"] as! String, status: updatedData["status"] as! Bool, date: updatedData["date"] as! String, nextdate: updatedData["nextdate"] as! String, remainingDays: remaining)!)
-                                                    DispatchQueue.main.async {
-                                                        self.sortSubscriptions()
-                                                        self.groupTableView.reloadData()
-                                                        let totalAmount = self.calculateTotalAmount()
-                                                        self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
-                                                    }
-                                                }
-                                    }
-                                    self.groupTableView.reloadData()
-                                    let totalAmount = self.calculateTotalAmount()
-                                    self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
-                                }
-                                //When subs in groups are removed
-                                if groupSubChange.type == .removed{
-                                    let removedData = groupSubChange.document.data()
-                                    let removedSubId = removedData["subid"] as! String
-                                    for sub in self.groupSubs{
-                                        if removedSubId == sub.id{
-                                            self.groupSubs.removeAll { $0.id == removedSubId }
-                                            self.sortSubscriptions()
-                                            self.groupTableView.reloadData()
-                                            let totalAmount = self.calculateTotalAmount()
-                                            self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
-                                        }
-                                    }
-                                }
-                            })
+                                })
+                            }
+                        }
+                    }
+                    if GroupChange.type == .removed{
+                        let removedGroup = GroupChange.document.data()
+                        let removedGroupID = removedGroup["gid"] as! String
+                        for group in self.groupSubs{
+                            if removedGroupID == group.gid{
+                                self.groupSubs.removeAll { $0.id == removedGroupID }
+                                self.sortSubscriptions()
+                                self.groupTableView.reloadData()
+                                let totalAmount = self.calculateTotalAmount()
+                                self.totalAmountLabel.countFromCurrentValueTo(CGFloat(totalAmount), withDuration: 1.5)
+                            }
                         }
                     }
                 })

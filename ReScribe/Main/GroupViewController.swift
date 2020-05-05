@@ -79,6 +79,17 @@ class GroupViewController: UIViewController {
                         }
                     }
                 }
+                if DocumentChange.type == .removed{
+                    let removedData = DocumentChange.document.data()
+                    let removedGroupId = removedData["gid"] as! String
+                    for group in self.groupList{
+                        if removedGroupId == group.gid{
+                            self.groupList.removeAll { $0.gid == removedGroupId }
+                            self.groupTableView.reloadData()
+
+                        }
+                    }
+                }
             })
             DispatchQueue.main.async {
                 self.groupTableView.reloadData()

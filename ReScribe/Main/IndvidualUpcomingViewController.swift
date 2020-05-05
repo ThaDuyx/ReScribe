@@ -59,9 +59,9 @@ class IndvidualUpcomingViewController: UIViewController {
                             } else {
                                 let logoImage = UIImage(data: data!)!
                                 if subStatus == true{
-                                    self.individualSubs.append(Subscription(id: subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: remaining)!)
+                                    self.individualSubs.append(Subscription(id: subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: remaining, gid: nil)!)
                                 } else {
-                                    self.individualSubs.append(Subscription(id: subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: 1000)!)
+                                    self.individualSubs.append(Subscription(id: subID, name: companyName, image: logoImage, plan: subPlan, price: subPrice, genre: subGenre, status: subStatus, date: subDate, nextdate: subNextDate, remainingDays: 1000, gid: nil)!)
                                 }
                                 DispatchQueue.main.async {
                                     self.sortSubscriptions()
