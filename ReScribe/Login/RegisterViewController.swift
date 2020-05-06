@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 class RegisterViewController: UIViewController {
     
@@ -15,6 +16,7 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var confirmPassLabel: UITextField!
     @IBOutlet weak var passLabel: UITextField!
     @IBOutlet weak var emailLabel: UITextField!
+    var loginViewController:LoginViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +26,14 @@ class RegisterViewController: UIViewController {
         confirmPassLabel.attributedPlaceholder = NSAttributedString(string: "Confirm Password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
 
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? LoginViewController{
+            vc.insertEmail.text = emailLabel.text
+            vc.insertPass.text = confirmPassLabel.text
+        }
+    }
+    
     @IBAction func goBack(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
@@ -51,6 +61,18 @@ class RegisterViewController: UIViewController {
             self.present(refreshAlert, animated: true, completion: nil)
         }else {
             //Her skal vi skrive det kode som skal køres når man har skrevet email, password og alt er i orden
+            Auth.auth().createUser(withEmail: emailLabel.text!, password: confirmPassLabel.text!) { (createUserSnapshot, error) in
+                if let error = error {
+                    print(error)
+                } else {
+                    
+                    print("Success")
+                    //self.loginViewController?.onCreatedUser(email: self.emailLabel.text!, password: self.confirmPassLabel.text!)
+                    
+                    //self.navigationController?.popViewController(animated: true)
+                    self.navigationController?.popToRootViewController(animated: true)
+                }
+            }
         }
     }
 }

@@ -19,10 +19,23 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var databaseLoad: UIActivityIndicatorView!
     @IBOutlet weak var viewLogin: UIView!
     var errorOcurred = false
+    var newUserEmail = ""
+    var newUserPass = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loginBtn.round(corners: .allCorners, cornerRadius: 10)
+        
+    }
+    
+    func onCreatedUser(email: String, password: String){
+        self.insertEmail.text = ""
+        self.insertPass.text = ""
+        self.insertEmail.text = email
+        self.insertPass.text = password
+        print(email)
+        print(password)
+        
     }
 
     @IBAction func loginTapped(_ sender: Any) {
