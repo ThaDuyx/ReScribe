@@ -23,7 +23,10 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loginBtn.round(corners: .allCorners, cornerRadius: 10)
+        insertEmail.attributedPlaceholder = NSAttributedString(string: "Insert your email", attributes: [NSAttributedString.Key.foregroundColor: UIColor.init(netHex: 0x9e9e9e)])
+        insertPass.attributedPlaceholder = NSAttributedString(string: "Insert your password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.init(netHex: 0x9e9e9e)])
     }
+    
 
     @IBAction func loginTapped(_ sender: Any) {
         
