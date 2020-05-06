@@ -96,6 +96,13 @@ class GroupViewController: UIViewController {
             }
         }
     }
+    override func viewWillAppear(_ animated: Bool) {
+        if let index = self.groupTableView.indexPathsForSelectedRows {
+            for at in index {
+                self.groupTableView.deselectRow(at: at, animated: true)
+            }
+        }
+    }
 }
 
 extension GroupViewController: UITableViewDataSource, UITableViewDelegate{

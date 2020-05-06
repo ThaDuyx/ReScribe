@@ -53,17 +53,22 @@ class SubscriptionAddViewController: UIViewController {
             }
         }
     }
-    
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        if let index = self.tblView.indexPathsForSelectedRows {
+            for at in index {
+                self.tblView.deselectRow(at: at, animated: true)
+            }
+        }
     }
 }
 
 extension SubscriptionAddViewController: UITableViewDataSource, UITableViewDelegate{
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searching {
             return searchName.count

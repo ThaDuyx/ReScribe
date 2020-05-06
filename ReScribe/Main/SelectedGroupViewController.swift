@@ -151,6 +151,11 @@ class SelectedGroupViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        if let index = self.paymentTableView.indexPathsForSelectedRows {
+            for at in index {
+                self.paymentTableView.deselectRow(at: at, animated: true)
+            }
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -185,7 +190,6 @@ class SelectedGroupViewController: UIViewController {
         }))
 
         present(refreshAlert, animated: true, completion: nil)
-        
         
     }
 }
@@ -222,8 +226,8 @@ extension SelectedGroupViewController: UITableViewDelegate, UITableViewDataSourc
             cell.selectedGroupTimeLabel.text = "Deativated"
             cell.selectedGroupCostLabel.text = " "
         } else {
-            cell.selectedGroupTimeLabel.text = String(groupSubscriptions[indexPath.section].remainingDays)
-            cell.selectedGroupCostLabel.text = String(groupSubscriptions[indexPath.section].price)
+            cell.selectedGroupTimeLabel.text = String(groupSubscriptions[indexPath.section].remainingDays) + " days"
+            cell.selectedGroupCostLabel.text = String(groupSubscriptions[indexPath.section].price) + " dkk,-"
         }
         cell.selectedGroupImage.image = groupSubscriptions[indexPath.section].image
 

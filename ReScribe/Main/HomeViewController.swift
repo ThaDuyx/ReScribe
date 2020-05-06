@@ -331,7 +331,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
             let inviCell = inviTableView.dequeueReusableCell(withIdentifier: "inviCell", for: indexPath) as! TableViewCell
             inviCell.homeIndvidualCostLabel.text = String(individualSubs[indexPath.section].price) + " dkk,-"
             inviCell.homeIndvidualImage.image = individualSubs[indexPath.section].image
-            inviCell.homeIndvidualRemainingLabel.text = String(individualSubs[indexPath.section].remainingDays)
+            inviCell.homeIndvidualRemainingLabel.text = String(individualSubs[indexPath.section].remainingDays) + " days"
             inviCell.layer.cornerRadius = 8
             inviCell.clipsToBounds = true
             return inviCell
@@ -339,7 +339,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate{
             let grpCell = groupTableView.dequeueReusableCell(withIdentifier: "grpCell", for: indexPath) as! TableViewCell
             grpCell.homeGroupCostLabel.text = String(groupSubs[indexPath.section].price) + " dkk,-"
             grpCell.homeGroupImage.image = groupSubs[indexPath.section].image
-            grpCell.homeGroupRemainingLabel.text = String(groupSubs[indexPath.section].remainingDays)
+            grpCell.homeGroupRemainingLabel.text = String(groupSubs[indexPath.section].remainingDays) + " days"
             grpCell.layer.cornerRadius = 8
             grpCell.clipsToBounds = true
             return grpCell

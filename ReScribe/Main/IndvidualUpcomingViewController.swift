@@ -155,6 +155,13 @@ class IndvidualUpcomingViewController: UIViewController {
             }
         }
     }
+    override func viewWillAppear(_ animated: Bool) {
+        if let index = self.indvidualTableView.indexPathsForSelectedRows {
+            for at in index {
+                self.indvidualTableView.deselectRow(at: at, animated: true)
+            }
+        }
+    }
 }
 
 extension IndvidualUpcomingViewController: UITableViewDataSource, UITableViewDelegate {
