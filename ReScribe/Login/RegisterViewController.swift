@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 import Firebase
 
+protocol UserCreated {
+    func whenUserIsCreated(email: String, password: String)
+}
+
 class RegisterViewController: UIViewController {
     
     @IBOutlet weak var registerBtn: UIButton!
@@ -17,6 +21,7 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var passLabel: UITextField!
     @IBOutlet weak var emailLabel: UITextField!
     var loginViewController:LoginViewController?
+    var delegate:UserCreated?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +38,7 @@ class RegisterViewController: UIViewController {
             vc.insertPass.text = confirmPassLabel.text
         }
     }
+
     
     @IBAction func goBack(_ sender: Any) {
         navigationController?.popViewController(animated: true)
@@ -61,16 +67,15 @@ class RegisterViewController: UIViewController {
             self.present(refreshAlert, animated: true, completion: nil)
         }else {
             //Her skal vi skrive det kode som skal køres når man har skrevet email, password og alt er i orden
-            Auth.auth().createUser(withEmail: emailLabel.text!, password: confirmPassLabel.text!) { (createUserSnapshot, error) in
+            Auth.auth().createUser(withEmail: email, password: confirmPassword) { (createUserSnapshot, error) in
                 if let error = error {
                     print(error)
                 } else {
-                    
-                    print("Success")
-                    //self.loginViewController?.onCreatedUser(email: self.emailLabel.text!, password: self.confirmPassLabel.text!)
-                    
-                    //self.navigationController?.popViewController(animated: true)
-                    self.navigationController?.popToRootViewController(animated: true)
+                    self.delegate?.whenUserIsCreated(email: email, password: confirmPassword)
+                    let db = Firestore.firestore()
+                    db.collection("users").document((createUserSnapshot?.user.uid)!).setData(["name":email, "uid":(createUserSnapshot?.user.uid)!])
+                    self.navigationController?.popViewController(animated: true)
+
                 }
             }
         }

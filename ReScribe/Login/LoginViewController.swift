@@ -11,8 +11,13 @@ import UIKit
 import FirebaseAuth
 import Firebase
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UserCreated {
+    func whenUserIsCreated(email: String, password: String) {
+        self.insertEmail.text = email
+        self.insertPass.text = password
 
+    }
+    
     @IBOutlet weak var insertEmail: UITextField!
     @IBOutlet weak var insertPass: UITextField!
     @IBOutlet weak var loginBtn: UIButton!
@@ -25,24 +30,20 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loginBtn.round(corners: .allCorners, cornerRadius: 10)
-        insertEmail.attributedPlaceholder = NSAttributedString(string: "Insert your email", attributes: [NSAttributedString.Key.foregroundColor: UIColor.init(netHex: 0x9e9e9e)])
-        insertPass.attributedPlaceholder = NSAttributedString(string: "Insert your password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.init(netHex: 0x9e9e9e)])
-        
+        insertEmail.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor: UIColor.init(netHex: 0x9e9e9e)])
+        insertPass.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.init(netHex: 0x9e9e9e)])
+        if newUserEmail != ""{
+            self.insertEmail.text = newUserEmail
+            self.insertPass.text = newUserPass
+            print(newUserPass)
+            print(newUserEmail)
+        }
     }
     
-    func onCreatedUser(email: String, password: String){
-        self.insertEmail.text = ""
-        self.insertPass.text = ""
-        self.insertEmail.text = email
-        self.insertPass.text = password
-        print(email)
-        print(password)
-        
-        print(email)
-        print(password)
-        
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            let secondVC: RegisterViewController = segue.destination as! RegisterViewController
+            secondVC.delegate = self
     }
-    
 
     @IBAction func loginTapped(_ sender: Any) {
         
