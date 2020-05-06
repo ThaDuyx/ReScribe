@@ -38,14 +38,13 @@ class GroupViewController: UIViewController {
                     let newGroup = DocumentChange.document.data()
                     let objectGID = newGroup["gid"] as! String
                     let objectGName = newGroup["name"] as! String
+                    //let objectGMember = newGroup["membercount"] as! Int
                     self.groupList.append(Group(id: objectGID, name: objectGName)!)
                     self.db.collection("groups").document(objectGID).collection("Subs").addSnapshotListener { (groupSubsSnap, error) in
-                        
                         if let error = error{
                             print("Error getting change: \(error)")
                         } else {
                             groupSubsSnap?.documentChanges.forEach({ (groupSubChange) in
-                                
                                 if groupSubChange.type == .added{
                                     let price = groupSubChange.document.data()
                                     let priceQuery = price["price"] as! Int

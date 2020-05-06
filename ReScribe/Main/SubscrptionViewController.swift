@@ -135,12 +135,23 @@ class SubscriptionViewController: UIViewController {
                     }
                 }
             } else if root == "groups"{
-                let newGroupSubDocument = db.collection("groups").document(groupID).collection("Subs").document()
-                newGroupSubDocument.setData(["subid":newGroupSubDocument.documentID, "company":headerName, "genre":genreString, "date":datePick.text!, "status":true, "plan":planName, "price":price, "nextdate":toBeStoredNextPaymentDate]) { (error) in
-                    if error != nil {
-                        print("Oh no")
+                let groupCount = db.collection("users").document(userID).collection("Groups").document(groupID)
+                groupCount.getDocument { (groupMember, error) in
+                    if let error = error {
+                        print(error)
                     } else {
-                        self.navigationController?.popToRootViewController(animated: true)
+                        let groupRef = groupMember?.data()
+                        let groupQuantity = groupRef!["membercount"] as! Int
+                    
+                        
+                        let newGroupSubDocument = self.db.collection("groups").document(self.groupID).collection("Subs").document()
+                        newGroupSubDocument.setData(["subid":newGroupSubDocument.documentID, "company":self.headerName, "genre":self.genreString, "date":self.datePick.text!, "status":true, "plan":self.planName, "price":self.price/groupQuantity, "nextdate":self.toBeStoredNextPaymentDate]) { (error) in
+                            if error != nil {
+                                print("Oh no")
+                            } else {
+                                self.navigationController?.popToRootViewController(animated: true)
+                            }
+                        }
                     }
                 }
             } else {
