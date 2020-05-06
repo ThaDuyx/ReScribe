@@ -175,6 +175,12 @@ class SelectedGroupViewController: UIViewController {
             for groupSub in self.groupSubscriptions{
                 self.db.collection("groups").document(self.selectedGroup!.gid).collection("Subs").document(groupSub.id).delete()
             }
+            self.db.collection("groups").document(self.selectedGroup!.gid).collection("users").getDocuments { (deleteUsersSnap, error) in
+                deleteUsersSnap?.documentChanges.forEach({ (DocumentChange) in
+                    let documentID = DocumentChange.document.documentID
+                    self.db.collection("groups").document(self.selectedGroup!.gid).collection("users").document(documentID).delete()
+                })
+            }
             self.db.collection("groups").document(self.selectedGroup!.gid).delete()
             
             self.navigationController?.popToRootViewController(animated: true)
