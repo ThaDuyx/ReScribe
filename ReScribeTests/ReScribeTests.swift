@@ -26,6 +26,8 @@ class ReScribeTests: XCTestCase {
     }
     
     func testDownloadImageInBackground(){
+        //Can only run if testCorrectUser has also been tested, because it needs the FirebaseApp.confire() call
+        //to work properly
         let expectation = XCTestExpectation(description: "Download image in background")
         let storage = Storage.storage()
         let storageRef = storage.reference()
