@@ -168,8 +168,6 @@ extension IndvidualUpcomingViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         rowIndex = indexPath.section
-
-        
         performSegue(withIdentifier: "viewSubs", sender: self)
     }
     
@@ -205,16 +203,14 @@ extension IndvidualUpcomingViewController: UITableViewDataSource, UITableViewDel
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = indvidualTableView.dequeueReusableCell(withIdentifier: "upcomingPayments", for: indexPath) as! TableViewCell
         
-        
         if individualSubs[indexPath.section].status != true{
             cell.upcomingTimeLabel.text = "Deactivated"
             cell.upcomingCostLabel.text = " "
             } else {
             cell.upcomingCostLabel.text = String(individualSubs[indexPath.section].price) + ",-  dkk"
-            cell.upcomingTimeLabel.text = String(individualSubs[indexPath.section].remainingDays) + "    days"
+            cell.upcomingTimeLabel.text = String(individualSubs[indexPath.section].remainingDays) + " days"
         }
         cell.upcomingImage.image = individualSubs[indexPath.section].image
-        
         cell.layer.cornerRadius = 8
         cell.clipsToBounds = true
         return cell
