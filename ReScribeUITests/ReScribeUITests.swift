@@ -34,16 +34,17 @@ class ReScribeUITests: XCTestCase {
                 app.alerts["Error"].scrollViews.otherElements.buttons["Try again"].tap()
                 loginTest += 1
             } else {
-                let userName = app.textFields["Email"]
+                let userName = app.textFields["Insert your email"]
                 userName.tap()
                 userName.typeText(validEmail)
                 
-                let passwordSecureTextField = app.secureTextFields["Password"]
+                let passwordSecureTextField = app.secureTextFields["Insert your password"]
                 passwordSecureTextField.tap()
                 passwordSecureTextField.typeText(validPass)
                 
                 app.buttons["Log in"].tap()
                 loginTest += 1
+                
             }
         }
     }

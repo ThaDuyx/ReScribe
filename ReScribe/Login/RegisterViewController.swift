@@ -47,26 +47,33 @@ class RegisterViewController: UIViewController {
         let password = passLabel.text!
         let confirmPassword = confirmPassLabel.text!
         let email = emailLabel.text!
+        let passwordLength = passLabel.text!.count
         if password != confirmPassword {
             let refreshAlert = UIAlertController(title: "Error", message: "Password and Password confirm is not the same", preferredStyle: UIAlertController.Style.alert)
             refreshAlert.addAction(UIAlertAction(title: "Try again", style: .cancel, handler: { (action: UIAlertAction!) in
-                
             }))
             self.present(refreshAlert, animated: true, completion: nil)
         }else if password == "" {
             let refreshAlert = UIAlertController(title: "Error", message: "Password can't be empty!", preferredStyle: UIAlertController.Style.alert)
             refreshAlert.addAction(UIAlertAction(title: "Try again", style: .cancel, handler: { (action: UIAlertAction!) in
-                
             }))
             self.present(refreshAlert, animated: true, completion: nil)
         } else if email == "" {
             let refreshAlert = UIAlertController(title: "Error", message: "Email can't be empty!", preferredStyle: UIAlertController.Style.alert)
             refreshAlert.addAction(UIAlertAction(title: "Try again", style: .cancel, handler: { (action: UIAlertAction!) in
-                
             }))
             self.present(refreshAlert, animated: true, completion: nil)
-        }else {
-            //Her skal vi skrive det kode som skal køres når man har skrevet email, password og alt er i orden
+        }else if passwordLength < 6 {
+            let refreshAlert = UIAlertController(title: "Error", message: "Password is too short!", preferredStyle: UIAlertController.Style.alert)
+            refreshAlert.addAction(UIAlertAction(title: "Try again", style: .cancel, handler: { (action: UIAlertAction!) in
+            }))
+            self.present(refreshAlert, animated: true, completion: nil)
+        }else if !email.contains("@"){
+            let refreshAlert = UIAlertController(title: "Error", message: "Email have to contain '@'", preferredStyle: UIAlertController.Style.alert)
+            refreshAlert.addAction(UIAlertAction(title: "Try again", style: .cancel, handler: { (action: UIAlertAction!) in
+            }))
+            self.present(refreshAlert, animated: true, completion: nil)
+        } else {
             Auth.auth().createUser(withEmail: email, password: confirmPassword) { (createUserSnapshot, error) in
                 if let error = error {
                     print(error)
