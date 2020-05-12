@@ -84,6 +84,9 @@ class SubscriptionViewController: UIViewController {
             self.navigationController?.setNavigationBarHidden(false, animated: true)
         }
     
+    
+    //Inspiration taken from this video with minor modifications:
+    //https://www.youtube.com/watch?v=8NngJrVFfUw&t=188s
     func instanceOfDate(){
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
@@ -94,6 +97,8 @@ class SubscriptionViewController: UIViewController {
         datePicker.datePickerMode = .date
     }
     
+    //Inspiration taken from this video with minor modifications:
+    //https://www.youtube.com/watch?v=8NngJrVFfUw&t=188s
     @objc func doneTapped() {
         //Creating date and showing it on the label
         let dateFormatter = DateFormatter()
